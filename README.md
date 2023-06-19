@@ -11,3 +11,4 @@ Looking forward to what the community has in store for this project!
 
 -OzInFl
 
+![alt text](https://github.com/OzInFl/Clipper1/blob/main/Clipper1.jpg?raw=true)
