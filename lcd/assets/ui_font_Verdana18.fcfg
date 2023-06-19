@@ -1,0 +1,16 @@
+{
+  "codename": "Verdana18",
+  "ttf_path": "\\assets\\verdana.ttf",
+  "bin_path": "\\assets\\ui_font_Verdana18.bin",
+  "c_path": "\\assets\\ui_font_Verdana18.c",
+  "cfg_path": "\\assets\\ui_font_Verdana18.fcfg",
+  "size": 18,
+  "bpp": 8,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}

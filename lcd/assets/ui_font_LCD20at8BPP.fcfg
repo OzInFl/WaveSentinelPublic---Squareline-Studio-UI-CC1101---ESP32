@@ -1,0 +1,16 @@
+{
+  "codename": "LCD20at8BPP",
+  "ttf_path": "\\assets\\E1234-p7pER.ttf",
+  "bin_path": "\\assets\\ui_font_LCD20at8BPP.bin",
+  "c_path": "\\assets\\ui_font_LCD20at8BPP.c",
+  "cfg_path": "\\assets\\ui_font_LCD20at8BPP.fcfg",
+  "size": 20,
+  "bpp": 8,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}
