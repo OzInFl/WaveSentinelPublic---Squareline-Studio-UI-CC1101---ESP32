@@ -1,3 +1,9 @@
+// CLIPPER 1 - SUBGHZ - BT5 - WiFi Testing Tool
+// Troy Dixon  
+// Initial Source Published 6-19-2023 - GITHUB  (OzInFl)
+//
+
+
 #include "Arduino.h"
 #include <WiFi.h>
 #include <WiFiClient.h>
