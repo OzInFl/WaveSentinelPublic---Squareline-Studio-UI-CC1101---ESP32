@@ -27,4 +27,4 @@ Various UI pages created for future use, developed With Squareline Studio. Sourc
 
 -OzInFl
 
-![alt text](https://github.com/OzInFl/CLIPPER1/blob/main/images/Clipper1.jpg?raw=true)
+![alt text](https://github.com/OzInFl/CLIPPER1/blob/main/DocsAndImages/Clipper1.jpg?raw=true)
