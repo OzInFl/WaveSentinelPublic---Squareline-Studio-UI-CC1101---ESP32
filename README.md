@@ -1,5 +1,6 @@
 # CLIPPER1
 
+Sub-Ghz - WiFi - Bluetooth 5 - Testing and Analysis Device
 
 WT32-SC01-PLUS interface for the CC1101 module that allows standalone testing without the need for external devices.
 
