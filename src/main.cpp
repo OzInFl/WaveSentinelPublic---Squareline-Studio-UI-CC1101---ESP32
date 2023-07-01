@@ -1258,49 +1258,47 @@ void fcnScanWifi(lv_event_t * e)
   
 }
 
-void fcnDeciTxOn(lv_event_t * e)
-{
-mySwitch.switchOn("11001", "01010");
-  //String OnVal=lv_textarea_get_text(ui_txtDeciamlValue);
-  //lv_label_set_text_static(ui_lblRCDecimalStatus,String(OnVal.substring(1,8)).c_str());
-
-  //mySwitch.switchOn(String(OnVal.substring(0,4)).c_str(),String(OnVal.substring(5,9)).c_str());
-  
-
-  // Wait a second
-  delay(1000);
-  lv_label_set_text_static(ui_lblRCSWStatus,"Transmitted.");
-  
-}
-
-void fcnDeciTxOff(lv_event_t * e)
-{
-
-}
 void fcnRCSWTXOn(lv_event_t * e)
 {
-  mySwitch.switchOn("11001", "01010");
-  //String OnVal=lv_textarea_get_text(ui_txtDeciamlValue);
-  //lv_label_set_text_static(ui_lblRCDecimalStatus,String(OnVal.substring(1,8)).c_str());
+  lv_label_set_text_static(ui_lblRCSWStatus,"TX 'On' Command.");
+  String FirstFive = lv_label_get_text(ui_lblBit0);
+  FirstFive += lv_label_get_text(ui_lblBit1);
+  FirstFive += lv_label_get_text(ui_lblBit2);
+  FirstFive += lv_label_get_text(ui_lblBit3);
+  FirstFive += lv_label_get_text(ui_lblBit4);
 
-  //mySwitch.switchOn(String(OnVal.substring(0,4)).c_str(),String(OnVal.substring(5,9)).c_str());
-  
+  String SecondFive = lv_label_get_text(ui_lblBit5);
+  SecondFive += lv_label_get_text(ui_lblBit6);
+  SecondFive += lv_label_get_text(ui_lblBit7);
+  SecondFive += lv_label_get_text(ui_lblBit8);
+  SecondFive += lv_label_get_text(ui_lblBit9);
 
-  // Wait a second
-  delay(1000);
-  lv_label_set_text_static(ui_lblRCSWStatus,"Transmitted.");
+  mySwitch.switchOn(String(FirstFive).c_str(),String(SecondFive).c_str());
+  //delay(1000);
+  String TxResult="TX ON: ";
+  TxResult +=FirstFive;
+  TxResult+=SecondFive;
+  lv_label_set_text_static(ui_lblRCSWStatus,String(TxResult).c_str());
 }
 void fcnRCSWTXOff(lv_event_t * e)
 {
-  
-mySwitch.switchOff("11001", "01010");
-  //String OnVal=lv_textarea_get_text(ui_txtDeciamlValue);
-  //lv_label_set_text_static(ui_lblRCDecimalStatus,String(OnVal.substring(1,8)).c_str());
+lv_label_set_text_static(ui_lblRCSWStatus,"TX 'Off' Command.");
+  String FirstFive = lv_label_get_text(ui_lblBit0);
+  FirstFive += lv_label_get_text(ui_lblBit1);
+  FirstFive += lv_label_get_text(ui_lblBit2);
+  FirstFive += lv_label_get_text(ui_lblBit3);
+  FirstFive += lv_label_get_text(ui_lblBit4);
 
-  //mySwitch.switchOn(String(OnVal.substring(0,4)).c_str(),String(OnVal.substring(5,9)).c_str());
-  
+  String SecondFive = lv_label_get_text(ui_lblBit5);
+  SecondFive += lv_label_get_text(ui_lblBit6);
+  SecondFive += lv_label_get_text(ui_lblBit7);
+  SecondFive += lv_label_get_text(ui_lblBit8);
+  SecondFive += lv_label_get_text(ui_lblBit9);
 
-  // Wait a second
-  delay(1000);
-  lv_label_set_text_static(ui_lblRCSWStatus,"Transmitted.");
+  mySwitch.switchOff(String(FirstFive).c_str(),String(SecondFive).c_str());
+  //delay(1000);
+  String TxResult="TX OFF: ";
+  TxResult +=FirstFive;
+  TxResult+=SecondFive;
+  lv_label_set_text_static(ui_lblRCSWStatus,String(TxResult).c_str());
 }

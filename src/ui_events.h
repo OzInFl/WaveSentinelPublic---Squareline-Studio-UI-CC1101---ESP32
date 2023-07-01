@@ -31,6 +31,7 @@ void fcnSettingsOTA(lv_event_t * e);
 void fcnScanWifi(lv_event_t * e);
 void fcnRCSWTXOn(lv_event_t * e);
 void fcnRCSWTXOff(lv_event_t * e);
+void fcnGetCurfreq(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

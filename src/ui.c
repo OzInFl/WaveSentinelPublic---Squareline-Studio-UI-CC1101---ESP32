@@ -222,6 +222,9 @@ void ui_event_btnTenPoleTxOn1(lv_event_t * e);
 lv_obj_t * ui_btnTenPoleTxOn1;
 lv_obj_t * ui_lblTenPoleTxOn1;
 lv_obj_t * ui_lblRCSWStatus;
+void ui_event_txtMainFreq1(lv_event_t * e);
+lv_obj_t * ui_txtMainFreq1;
+lv_obj_t * ui_ddlTenProto;
 lv_obj_t * ui____initial_actions0;
 const lv_img_dsc_t * ui_imgset_splashbkgnd[1] = {&ui_img_splashbkgnd2_png};
 
@@ -614,6 +617,15 @@ void ui_event_btnTenPoleTxOn1(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         fcnRCSWTXOff(e);
+    }
+}
+void ui_event_txtMainFreq1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(ui_scrKybdNum, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0);
+        fcnGetCurfreq(e);
     }
 }
 
