@@ -12,7 +12,6 @@
 #include <ArduinoOTA.h>
 #include "Audio.h"
 #include "main.h"
-#include <LovyanGFX.hpp>
 #include <SD.h>
 #include <SPI.h>
 #include <ELECHOUSE_CC1101_SRC_DRV.h>
@@ -272,7 +271,7 @@ void initBT5(){
 
   // Start advertising
   pServer->getAdvertising()->start();
-  lv_label_set_text(ui_lblSplash,"Waiting");
+  lv_label_set_text_static(ui_lblSplash,"Waiting");
   Serial.println("Waiting a client connection to notify...");
 
 }
@@ -290,7 +289,7 @@ void doBlue(){
     if (!deviceConnected && oldDeviceConnected) {
         delay(500); // give the bluetooth stack the chance to get things ready
         pServer->startAdvertising(); // restart advertising
-        lv_label_set_text(ui_lblSplash,"start advertising");
+        lv_label_set_text_static(ui_lblSplash,"start advertising");
         Serial.println("start advertising");
         oldDeviceConnected = deviceConnected;
     }
@@ -334,8 +333,8 @@ void initCC1101(){
   
     if(!ELECHOUSE_cc1101.getCC1101()){       // Check the CC1101 Spi connection.
       //Serial.println("CC1101 Connection Error");
-      lv_label_set_text(ui_lblSplash,"1101 Init Fail");
-    }else{lv_label_set_text(ui_lblSplash,"1101 Init Good");}
+      lv_label_set_text_static(ui_lblSplash,"1101 Init Fail");
+    }else{lv_label_set_text_static(ui_lblSplash,"1101 Init Good");}
 }
 
 #include <fstream>
@@ -398,7 +397,7 @@ void sendSamples(int samples[], int samplesLength) {
   digitalWrite(CCGDO0,0);
 
   //delay(5);
-  lv_label_set_text(ui_lblMainStatus,"Transmission completed.");
+  lv_label_set_text_static(ui_lblMainStatus,"Transmission completed.");
   
   //digitalWrite(PIN_LED_TX, LOW);
 }
@@ -426,7 +425,7 @@ void radioHandlerOnChange() {
 	
 	bool input = digitalRead(CCGDO2);
 	if(input == 1){
-    lv_label_set_text(ui_lblProtAnaRXEn,"RX-SENSED");
+    lv_label_set_text_static(ui_lblProtAnaRXEn,"RX-SENSED");
 		RXbuffer += "\n0 -> 1 after " + String(delta_micros);
 	} else {
 		RXbuffer += "\n1 -> 0 after " + String(delta_micros);
@@ -440,7 +439,7 @@ void radioHandlerOnChange() {
 void handleFlipperCommandLine(String command, String value){
     if(command == "Frequency"){
       float frequency = value.toFloat() / 1000000;   
-      lv_label_set_text(ui_lblPresetsStatus,String(frequency).c_str());
+      lv_label_set_text_static(ui_lblPresetsStatus,String(frequency).c_str());
       ELECHOUSE_cc1101.setMHZ(frequency);
       CC1101_MHZ = frequency;
     }
@@ -465,7 +464,7 @@ void transmitFlipperFile(String filename, bool transmit){
   flipperFile = SD.open(filename);
 
   if (!flipperFile) {
-    lv_label_set_text(ui_lblPresetsStatus,"NOT A FLIPPER FILE");
+    lv_label_set_text_static(ui_lblPresetsStatus,"NOT A FLIPPER FILE");
   } else {
     // PARSE CONTENT CHAR BY CHAR
     String command = "";
@@ -536,14 +535,7 @@ void transmitFlipperFile(String filename, bool transmit){
     }
 
     flipperFile.close();
-
-    //if(transmit == false){
-      // START TRANSMITTING THE DATA
-    //  fileToTransmit = filename;
-    //  transmitFlipperFile(filename, true);
-    //  ELECHOUSE_cc1101.SetRx(CCGDO2);
-   // }
-    
+       
   }
   
 }
@@ -677,7 +669,7 @@ SDInit();
     
     // Open music file
     if(!audio.connecttoFS(SD,"/test.mp3")){
-    lv_label_set_text(ui_lblMainStatus,"Shit Failed");
+    lv_label_set_text_static(ui_lblMainStatus,"Shit Failed");
     }
     
     
@@ -702,7 +694,7 @@ void guiHandler()
       // xTaskCreate(
       lvgl_loop,   // Function that should be called
       "LVGL Loop", // Name of the task (for debugging)
-      20480,       // Stack size (bytes)
+      100000,       // Stack size (bytes)
       NULL,        // Parameter to pass
       1,           // Task priority
       // NULL
@@ -728,14 +720,14 @@ void setup(void)
 
 /* this callback function will be invoked when starting */
   ArduinoOTA.onStart([]() {
-    lv_label_set_text(ui_lblSettingsStatus,"UPDATE STARTED");
+    lv_label_set_text_static(ui_lblSettingsStatus,"UPDATE STARTED");
     //Serial.println("Start updating");
   });
 
   /* this callback function will be invoked when updating end */
   ArduinoOTA.onEnd([]() {
     OTAInProgress=0;
-    lv_label_set_text(ui_lblSettingsStatus,"COMPLETE - RESTARTING");
+    lv_label_set_text_static(ui_lblSettingsStatus,"COMPLETE - RESTARTING");
     delay(5000);  
     ESP.restart();
   });
@@ -743,11 +735,11 @@ void setup(void)
     /* this callback function will be invoked when updating error */
   ArduinoOTA.onError([](ota_error_t error) {
     Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) lv_label_set_text(ui_lblSettingsStatus,"Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) lv_label_set_text(ui_lblSettingsStatus,"Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) lv_label_set_text(ui_lblSettingsStatus,"Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) lv_label_set_text(ui_lblSettingsStatus,"Receive Failed");
-    else if (error == OTA_END_ERROR) lv_label_set_text(ui_lblSettingsStatus,"End Failed");
+    if (error == OTA_AUTH_ERROR) lv_label_set_text_static(ui_lblSettingsStatus,"Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) lv_label_set_text_static(ui_lblSettingsStatus,"Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) lv_label_set_text_static(ui_lblSettingsStatus,"Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) lv_label_set_text_static(ui_lblSettingsStatus,"Receive Failed");
+    else if (error == OTA_END_ERROR) lv_label_set_text_static(ui_lblSettingsStatus,"End Failed");
   });
   /* this callback function will be invoked when a number of chunks of software was flashed
     so we can use it to calculate the progress of flashing */
@@ -755,7 +747,7 @@ void setup(void)
     String UpdProgress="Progress: ";
     UpdProgress+=String((progress / (total / 100))).c_str();
     //Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-    lv_label_set_text(ui_lblSettingsStatus,UpdProgress.c_str());
+    lv_label_set_text_static(ui_lblSettingsStatus,UpdProgress.c_str());
     lv_bar_set_value(ui_barProgress,progress / (total / 100),LV_ANIM_ON);
   });
 
@@ -806,6 +798,7 @@ void setup(void)
   // Open a file to record the signal
   recorded_signal_file = SD.open("/recorded_signal.bin", FILE_WRITE);
   
+  //lv_textarea_set_cursor_type(ui_txtProtAnaResults, LV_CURSOR_NONE);
 }
 
 
@@ -990,14 +983,14 @@ void handleRoot() {
 void handleUpdate() {
   HTTPUpload& upload = server.upload();
   if (upload.status == UPLOAD_FILE_START) {
-    lv_label_set_text(ui_lblSettingsStatus,"Starting firmware update");
+    lv_label_set_text_static(ui_lblSettingsStatus,"Starting firmware update");
     if (!Update.begin()) {
-      lv_label_set_text(ui_lblSettingsStatus,"Update failed to begin.");
+      lv_label_set_text_static(ui_lblSettingsStatus,"Update failed to begin.");
       server.send(500, "text/plain", "Update failed to begin.");
       return;
     }else{
     
-    lv_label_set_text(ui_lblSettingsStatus,"Firmware update complete.");
+    lv_label_set_text_static(ui_lblSettingsStatus,"Firmware update complete.");
     server.send(200, "text/plain", "Firmware update complete.");
   }
   }
@@ -1011,19 +1004,19 @@ void handleUpdate() {
 // LCD Events - Should this be moved back to the ui_events ?? 
 
 void setTxFlag(){
-  lv_label_set_text(ui_lblMainStatus,"TRANSMITTING");
+  lv_label_set_text_static(ui_lblMainStatus,"TRANSMITTING");
    //lv_img_set_src(ui_indMain,"TXInd.png");
   //delay(10);
 
 }
 
 void setRxFlag(){
-lv_label_set_text(ui_lblMainStatus,"RECEIVING");
+lv_label_set_text_static(ui_lblMainStatus,"RECEIVING");
 //lv_img_set_src(ui_indMain,"RXInd.png");
 }
 
 void setIdleFlag(){
-  lv_label_set_text(ui_lblMainStatus,"IDLE");
+  lv_label_set_text_static(ui_lblMainStatus,"IDLE");
   //lv_img_set_src(ui_indMain,"IdleInd.png");
 }
 
@@ -1062,28 +1055,21 @@ void fcnTxTest(lv_event_t * e)
 {
 	// Your code here
   ELECHOUSE_cc1101.SetTx();
-	lv_label_set_text(ui_lblMainStatus,"433 Test Complete");
+	lv_label_set_text_static(ui_lblMainStatus,"433 Test Complete");
   ELECHOUSE_cc1101.setMHZ(433.92);
   sendSamples(txTestcode,512); 
 }
 
-void fcnTxTesla(lv_event_t * e)
-{
-	// Your code here
- lv_label_set_text(ui_lblMainStatus,"TX Tesla Begin");
-  delay(100);
-  sendTeslaSignal(315.00);
-  lv_label_set_text(ui_lblMainStatus,"TX Tesla Complete");
-}
+
 
 
 void fcnTeslaTx(lv_event_t * e)
 {
 	// Your code here
-  lv_label_set_text(ui_lblMainStatus,"TX Tesla Begin");
+  lv_label_set_text_static(ui_lblMainStatus,"TX Tesla Begin");
   delay(100);
   sendTeslaSignal(315.00);
-  lv_label_set_text(ui_lblMainStatus,"TX Tesla Complete");
+  lv_label_set_text_static(ui_lblMainStatus,"TX Tesla Complete");
   
 }
 
@@ -1097,7 +1083,7 @@ void fcnMainReset(lv_event_t * e)
 void fcnSetPreset(lv_event_t * e)
 {
 	// Your code here
-  lv_label_set_text(ui_lblMainStatus,"Preset Loaded");
+  lv_label_set_text_static(ui_lblMainStatus,"Preset Loaded");
 }
 
 void fcnPresetTx(lv_event_t * e)
@@ -1127,7 +1113,7 @@ ELECHOUSE_cc1101.setPA(12);
 void fcnProtAnaRxEn(lv_event_t * e)
 {
     
-       lv_label_set_text(ui_lblProtAnaRXEn,"RX ON");
+       lv_label_set_text_static(ui_lblProtAnaRXEn,"RX ON");
        ELECHOUSE_cc1101.SetRx(CC1101_MHZ);
        CC1101_TX=false;
        ProtAnaRxEn=1;
@@ -1136,7 +1122,7 @@ void fcnProtAnaRxEn(lv_event_t * e)
 void fcnProtAnaRxOff(lv_event_t * e)
 {
 	// Your code here
-        lv_label_set_text(ui_lblProtAnaRXEn,"RX OFF");
+        lv_label_set_text_static(ui_lblProtAnaRXEn,"RX OFF");
         ELECHOUSE_cc1101.SetTx(CC1101_MHZ);
         CC1101_TX=true;
         ProtAnaRxEn=0;  
@@ -1210,10 +1196,10 @@ void fcnSettingsOTA(lv_event_t * e)
   OTAInProgress=1;
   WiFi.softAP(ssid, password,wifi_channel);
   
-  lv_label_set_text(ui_lblSettingsStatus,"Connect to IP");
+  lv_label_set_text_static(ui_lblSettingsStatus,"Connect to IP");
   
-  lv_label_set_text(ui_lblSettingsStatus,"OTA READY");
-  lv_label_set_text(ui_lblSettingsIPAddr,"192.168.4.1"); //Took Out String(WiFi.softAPIP()).c_str()
+  lv_label_set_text_static(ui_lblSettingsStatus,"OTA READY");
+  lv_label_set_text_static(ui_lblSettingsIPAddr,"192.168.4.1"); //Took Out String(WiFi.softAPIP()).c_str()
   // Start OTA
   ArduinoOTA.begin();
   
@@ -1270,4 +1256,51 @@ void fcnScanWifi(lv_event_t * e)
 	// Your code here
     wifiScanAndUpdateUI(ui_txtWifiScanNetsFound, ui_ddlWifiSSID);
   
+}
+
+void fcnDeciTxOn(lv_event_t * e)
+{
+mySwitch.switchOn("11001", "01010");
+  //String OnVal=lv_textarea_get_text(ui_txtDeciamlValue);
+  //lv_label_set_text_static(ui_lblRCDecimalStatus,String(OnVal.substring(1,8)).c_str());
+
+  //mySwitch.switchOn(String(OnVal.substring(0,4)).c_str(),String(OnVal.substring(5,9)).c_str());
+  
+
+  // Wait a second
+  delay(1000);
+  lv_label_set_text_static(ui_lblRCSWStatus,"Transmitted.");
+  
+}
+
+void fcnDeciTxOff(lv_event_t * e)
+{
+
+}
+void fcnRCSWTXOn(lv_event_t * e)
+{
+  mySwitch.switchOn("11001", "01010");
+  //String OnVal=lv_textarea_get_text(ui_txtDeciamlValue);
+  //lv_label_set_text_static(ui_lblRCDecimalStatus,String(OnVal.substring(1,8)).c_str());
+
+  //mySwitch.switchOn(String(OnVal.substring(0,4)).c_str(),String(OnVal.substring(5,9)).c_str());
+  
+
+  // Wait a second
+  delay(1000);
+  lv_label_set_text_static(ui_lblRCSWStatus,"Transmitted.");
+}
+void fcnRCSWTXOff(lv_event_t * e)
+{
+  
+mySwitch.switchOff("11001", "01010");
+  //String OnVal=lv_textarea_get_text(ui_txtDeciamlValue);
+  //lv_label_set_text_static(ui_lblRCDecimalStatus,String(OnVal.substring(1,8)).c_str());
+
+  //mySwitch.switchOn(String(OnVal.substring(0,4)).c_str(),String(OnVal.substring(5,9)).c_str());
+  
+
+  // Wait a second
+  delay(1000);
+  lv_label_set_text_static(ui_lblRCSWStatus,"Transmitted.");
 }
