@@ -165,8 +165,13 @@ unsigned long samplesmooth[samplesize];
 int samplecount;
 
 
-#define CCGDO0 13 //GPIO2 - TX Line
-#define CCGDO2 21 //GPIO4 - RX Line
+// CC1101 Modules - GDO Pins  (CSN are in the VSPI area)  //
+#define CCGDO0A 13 //GPIO13 - TX Line Module 1
+#define CCGDO2A 21 //GPIO21 - RX Line Module 1
+
+#define CCGDO2B 2 //GPIO2  - RX Line Module 2 (NOT TESTED YET!)
+#define CCGDO0B 1 //GPIO1  - TX Line Module 2 (NOT TESTED YET!)
+// End CC1101 Pins //
 
 volatile long last_RXmillis; //CC1101 Receive timer
 volatile long last_micros;
@@ -178,12 +183,13 @@ String RXbuffer;//RX buffer
   #define VSPI_MISO   11
   #define VSPI_MOSI   10
   #define VSPI_SCLK   14
-  #define VSPI_SS     12
+  #define VSPI_SSA    12 //MODULE 1 CSN
+  #define VSPI_SSB    42 //MODULE 2 CSN
 #else
   #define VSPI_MISO   MISO
   #define VSPI_MOSI   MOSI
   #define VSPI_SCLK   SCK
-  #define VSPI_SS     SS
+  #define VSPI_SSAA     SS
 #endif
 
 #if CONFIG_IDF_TARGET_ESP32S2 || CONFIG_IDF_TARGET_ESP32S3
@@ -311,17 +317,17 @@ void touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data);
 
 //CC1101 Settings and Stuff
 void initCC1101(){
-    ELECHOUSE_cc1101.setSpiPin(VSPI_SCLK,VSPI_MISO,VSPI_MOSI,VSPI_SS);
+    ELECHOUSE_cc1101.setSpiPin(VSPI_SCLK,VSPI_MISO,VSPI_MOSI,VSPI_SSA);
     ELECHOUSE_cc1101.Init();
-    ELECHOUSE_cc1101.setGDO(CCGDO0, CCGDO2);
+    ELECHOUSE_cc1101.setGDO(CCGDO0A, CCGDO2A);
     ELECHOUSE_cc1101.setMHZ(CC1101_MHZ);        // Here you can set your basic frequency. The lib calculates the frequency automatically (default = 433.92).The cc1101 can: 300-348 MHZ, 387-464MHZ and 779-928MHZ. Read More info from datasheet.
     ELECHOUSE_cc1101.setPA(12);
     if(CC1101_TX){
     ELECHOUSE_cc1101.SetTx();                             // set Transmit on
-    pinMode(CCGDO0,OUTPUT);  
+    pinMode(CCGDO0A,OUTPUT);  
   } else {
     ELECHOUSE_cc1101.SetRx();                             // set Receive on
-    pinMode(CCGDO2,INPUT);  
+    pinMode(CCGDO2A,INPUT);  
   }               
   ELECHOUSE_cc1101.setModulation(CC1101_MODULATION);      // set modulation mode. 0 = 2-FSK, 1 = GFSK, 2 = ASK/OOK, 3 = 4-FSK, 4 = MSK.
   ELECHOUSE_cc1101.setDRate(CC1101_DRATE);                // Set the Data Rate in kBaud. Value from 0.02 to 1621.83. Default is 99.97 kBaud!
@@ -388,13 +394,13 @@ void sendSamples(int samples[], int samplesLength) {
       n = 0;
     }
 
-    digitalWrite(CCGDO0,n);
+    digitalWrite(CCGDO0A,n);
     
     delayMicroseconds(delay);
   }
 
   // STOP TRANSMITTING
-  digitalWrite(CCGDO0,0);
+  digitalWrite(CCGDO0A,0);
 
   //delay(5);
   lv_label_set_text_static(ui_lblMainStatus,"Transmission completed.");
@@ -423,7 +429,7 @@ void Rxloop(){
 void radioHandlerOnChange() {
 	int delta_micros = micros() - last_micros;
 	
-	bool input = digitalRead(CCGDO2);
+	bool input = digitalRead(CCGDO2A);
 	if(input == 1){
     lv_label_set_text_static(ui_lblProtAnaRXEn,"RX-SENSED");
 		RXbuffer += "\n0 -> 1 after " + String(delta_micros);
@@ -708,8 +714,8 @@ void setup(void)
   
   //initialise instance of the SPIClass attached to VSPI 
   vspi = new SPIClass(VSPI);
-  vspi->begin(VSPI_SCLK, VSPI_MISO, VSPI_MOSI, VSPI_SS); //SCLK, MISO, MOSI, SS
-  pinMode(VSPI_SS, OUTPUT); //VSPI SS
+  vspi->begin(VSPI_SCLK, VSPI_MISO, VSPI_MOSI, VSPI_SSA); //SCLK, MISO, MOSI, SS
+  pinMode(VSPI_SSA, OUTPUT); //VSPI SS
   pinMode(SD_CS,OUTPUT); //SD Card SS
   SPI.begin(SD_SCLK, SD_MISO, SD_MOSI);
   SD.begin(SD_CS);
@@ -760,7 +766,7 @@ void setup(void)
   initSpiffs();
 
   //Initialize the LCD/tft Graphics obnjects
-  lcd.init(); // Initialize LovyanGFX
+  lcd.init(); // Initialize LCD
   lcd.setRotation(2);
   lv_init();  // Initialize lvgl
 
@@ -785,16 +791,16 @@ void setup(void)
 
   /*** Initialize the Squareline Interface ***/
   ui_init(); // The Squareline interface
-   guiHandler();
-   lv_timer_handler();
+  guiHandler();
+  lv_timer_handler();
   
   /***Initialize the CC1101 Radio and set the frequency ***/
   CC1101_MHZ=433.92;
   initCC1101();
-  mySwitch.enableReceive(CCGDO2);  // Receiver on
-  mySwitch.enableTransmit(CCGDO0); // Transmitter Enabler
+  mySwitch.enableReceive(CCGDO2A);  // Receiver on
+  mySwitch.enableTransmit(CCGDO0A); // Transmitter Enabler
 
-  initBT5();
+  //initBT5();
   // Open a file to record the signal
   recorded_signal_file = SD.open("/recorded_signal.bin", FILE_WRITE);
   
@@ -933,7 +939,7 @@ void populateFileDropdown() {
 
 void sendByte(uint8_t dataByte) {
   for (int8_t bit=7; bit>=0; bit--) { // MSB
-    digitalWrite(CCGDO0, (dataByte & (1 << bit)) != 0 ? HIGH : LOW);
+    digitalWrite(CCGDO0A, (dataByte & (1 << bit)) != 0 ? HIGH : LOW);
     delayMicroseconds(pulseWidth);
   }
 }
@@ -947,7 +953,7 @@ void sendBits(int *buff, int length, int gdo0) {
 }
 
 void sendTeslaSignal(float freq) {
-  pinMode(CCGDO0,OUTPUT);
+  pinMode(CCGDO0A,OUTPUT);
   
   ELECHOUSE_cc1101.Init();
   ELECHOUSE_cc1101.setModulation(2);
@@ -956,7 +962,7 @@ void sendTeslaSignal(float freq) {
   ELECHOUSE_cc1101.SetTx();
   for (uint8_t t=0; t < transmtesla; t++) {
     for (uint8_t i=0; i<messageLength; i++) sendByte(sequence[i]);
-    digitalWrite(CCGDO0, LOW);
+    digitalWrite(CCGDO0A, LOW);
     delay(messageDistance);
   }
   ELECHOUSE_cc1101.setSidle();
@@ -1023,6 +1029,8 @@ void setIdleFlag(){
 
 
 void wifiScanAndUpdateUI(lv_obj_t* textarea, lv_obj_t* dropdown) {
+
+  lv_textarea_set_text(ui_lblWifiScanNetsFound,"-Scanning-");
   // Scan for Wi-Fi networks
   int numNetworks = WiFi.scanNetworks();
 
@@ -1049,6 +1057,7 @@ void wifiScanAndUpdateUI(lv_obj_t* textarea, lv_obj_t* dropdown) {
     // Update the dropdown
     lv_dropdown_add_option(dropdown, ssid.c_str(), LV_DROPDOWN_POS_LAST);
   }
+   lv_textarea_set_text(ui_lblWifiScanNetsFound,"-Nets Found-");
 }
 
 void fcnTxTest(lv_event_t * e)
