@@ -1,3 +1,5 @@
+https://ko-fi.com/ozinfl
+
 # CLIPPER1
 
 Sub-Ghz - WiFi - Bluetooth 5 - Testing and Analysis Device
