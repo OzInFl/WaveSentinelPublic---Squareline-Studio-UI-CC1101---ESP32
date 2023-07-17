@@ -1,0 +1,44 @@
+void fcnRCSWTXOn(lv_event_t * e)
+{
+  lv_label_set_text_static(ui_lblRCSWStatus,"TX 'On' Command.");
+  String FirstFive = lv_label_get_text(ui_lblBit0);
+  FirstFive += lv_label_get_text(ui_lblBit1);
+  FirstFive += lv_label_get_text(ui_lblBit2);
+  FirstFive += lv_label_get_text(ui_lblBit3);
+  FirstFive += lv_label_get_text(ui_lblBit4);
+
+  String SecondFive = lv_label_get_text(ui_lblBit5);
+  SecondFive += lv_label_get_text(ui_lblBit6);
+  SecondFive += lv_label_get_text(ui_lblBit7);
+  SecondFive += lv_label_get_text(ui_lblBit8);
+  SecondFive += lv_label_get_text(ui_lblBit9);
+
+  mySwitch.switchOn(String(FirstFive).c_str(),String(SecondFive).c_str());
+  //delay(1000);
+  String TxResult="TX ON: ";
+  TxResult +=FirstFive;
+  TxResult+=SecondFive;
+  lv_label_set_text_static(ui_lblRCSWStatus,String(TxResult).c_str());
+}
+void fcnRCSWTXOff(lv_event_t * e)
+{
+lv_label_set_text_static(ui_lblRCSWStatus,"TX 'Off' Command.");
+  String FirstFive = lv_label_get_text(ui_lblBit0);
+  FirstFive += lv_label_get_text(ui_lblBit1);
+  FirstFive += lv_label_get_text(ui_lblBit2);
+  FirstFive += lv_label_get_text(ui_lblBit3);
+  FirstFive += lv_label_get_text(ui_lblBit4);
+
+  String SecondFive = lv_label_get_text(ui_lblBit5);
+  SecondFive += lv_label_get_text(ui_lblBit6);
+  SecondFive += lv_label_get_text(ui_lblBit7);
+  SecondFive += lv_label_get_text(ui_lblBit8);
+  SecondFive += lv_label_get_text(ui_lblBit9);
+
+  mySwitch.switchOff(String(FirstFive).c_str(),String(SecondFive).c_str());
+  //delay(1000);
+  String TxResult="TX OFF: ";
+  TxResult +=FirstFive;
+  TxResult+=SecondFive;
+  lv_label_set_text_static(ui_lblRCSWStatus,String(TxResult).c_str());
+}

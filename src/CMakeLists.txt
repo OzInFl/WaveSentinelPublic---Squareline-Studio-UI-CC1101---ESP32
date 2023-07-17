@@ -9,6 +9,7 @@ SET(SOURCES screens/ui_scrSplash.c
     screens/ui_scrRCSWMain.c
     screens/ui_scrRCSWTenPole.c
     ui.c
+    components/ui_comp_hook.c
     ui_helpers.c
     images/ui_img_splashbkgnd2_png.c
     images/ui_img_mainbackground_png.c
