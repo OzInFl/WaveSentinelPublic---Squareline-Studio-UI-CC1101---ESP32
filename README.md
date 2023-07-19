@@ -15,8 +15,6 @@ Looking forward to what the community has in store for this project!
 
 Thanks to the creator of this fantastic CC1101 Library: https://github.com/LSatan/SmartRC-CC1101-Driver-Lib
 
-Also : https://github.com/1technophile/NewRemoteSwitch.git for analysis functions..
-
 Also RcSwitch - https://github.com/sui77/rc-switch
 
 
