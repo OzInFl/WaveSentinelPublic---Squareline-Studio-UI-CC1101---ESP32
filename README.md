@@ -1,4 +1,4 @@
-https://ko-fi.com/ozinfl
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'I2I8N6N3J');kofiwidget2.draw();</script> 
 
 # CLIPPER1
 
