@@ -17,6 +17,10 @@ Thanks to the creator of this fantastic CC1101 Library: https://github.com/LSata
 
 Also : https://github.com/1technophile/NewRemoteSwitch.git for analysis functions..
 
+Also RcSwitch - https://github.com/sui77/rc-switch
+
+
+
 
 Features Thus Far: 
 
