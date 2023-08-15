@@ -31,6 +31,7 @@ Will Play Sound from SD card or memory (I2S) support
 
 
 Youtube links: https://youtu.be/rR51t8njWyE
+
                https://youtu.be/rlbaQM_o_K4
 
 Various UI pages created for future use, developed With Squareline Studio. Source Files are in the LCD directory.
