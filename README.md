@@ -28,6 +28,11 @@ Sub-Ghz Protocol analyzer (thanks to the SmartRC Library) - Still needs some lov
 Wifi Scanner - For 2.4Ghz Wifi - will populate the found hotspots in the Dropdown for whatever...
 Tesla Charge Port Tester - Dedicated button - Thanks to (https://github.com/fredilarsen/TeslaChargeDoorOpener) for the actual protocol rather than a capture. 
 Will Play Sound from SD card or memory (I2S) support
+
+
+Youtube links: https://youtu.be/rR51t8njWyE
+               https://youtu.be/rlbaQM_o_K4
+
 Various UI pages created for future use, developed With Squareline Studio. Source Files are in the LCD directory.
 
 -OzInFl
