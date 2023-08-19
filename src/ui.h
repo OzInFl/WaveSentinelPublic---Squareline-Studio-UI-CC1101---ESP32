@@ -19,8 +19,8 @@ void ui_scrSplash_screen_init(void);
 void ui_event_scrSplash(lv_event_t * e);
 extern lv_obj_t * ui_scrSplash;
 extern lv_obj_t * ui_lblSplash;
-extern lv_obj_t * ui_Label2;
-extern lv_obj_t * ui_Label4;
+extern lv_obj_t * ui_lblSplashStatus;
+extern lv_obj_t * ui_lblVersion;
 extern lv_obj_t * ui_lblTitle;
 // SCREEN: ui_scrMain
 void ui_scrMain_screen_init(void);

@@ -4,6 +4,7 @@
 //
 
 
+
 #include "Arduino.h"
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -34,6 +35,9 @@
 
 
 //Global Paramaters
+
+String FWVersion="Version 0.3b";
+
 
 const char* ssid = "CLIPPER";
 const char* password = "987654321";
@@ -792,7 +796,8 @@ void setup(void)
   ui_init(); // The Squareline interface
   guiHandler();
   lv_timer_handler();
-  
+  lv_label_set_text(ui_lblVersion,String(FWVersion).c_str());
+  lv_label_set_text(ui_lblSplashStatus,"TAP ANYWHERE TO BEGIN");
   /***Initialize the CC1101 Radio and set the frequency ***/
   CC1101_MHZ=433.92;
   initCC1101();
@@ -802,7 +807,7 @@ void setup(void)
   //initBT5();
   // Open a file to record the signal
   recorded_signal_file = SD.open("/recorded_signal.bin", FILE_WRITE);
-  
+ 
   //lv_textarea_set_cursor_type(ui_txtProtAnaResults, LV_CURSOR_NONE);
 }
 
@@ -1072,8 +1077,12 @@ void fcnTxTest(lv_event_t * e)
 void fcnTeslaTx(lv_event_t * e)
 {
 	// Your code here
+ lv_label_set_text_static(ui_lblMainStatus,"TX Tesla Begin");
+  delay(100);
   sendTeslaSignal(315.00);
-  lv_label_set_text(ui_lblMainStatus,"TX Tesla Complete");
+  delay(200);
+  sendTeslaSignal(433.92);
+  lv_label_set_text_static(ui_lblMainStatus,"TX Tesla Complete");
   
 }
 
