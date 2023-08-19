@@ -6,6 +6,7 @@
 
 
 #include "Arduino.h"
+#include <..\version.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
@@ -35,9 +36,6 @@
 
 
 //Global Paramaters
-
-String FWVersion="Version 0.3b";
-
 
 const char* ssid = "CLIPPER";
 const char* password = "987654321";
@@ -796,7 +794,14 @@ void setup(void)
   ui_init(); // The Squareline interface
   guiHandler();
   lv_timer_handler();
-  lv_label_set_text(ui_lblVersion,String(FWVersion).c_str());
+  String FirmwareVer = "Version ";
+  FirmwareVer += APP_VERSION_MAJOR;
+  FirmwareVer += ".";
+  FirmwareVer +=APP_VERSION_MINOR;
+  FirmwareVer += ".";
+  FirmwareVer += APP_VERSION_PATCH;
+
+  lv_label_set_text(ui_lblVersion,String(FirmwareVer).c_str());
   lv_label_set_text(ui_lblSplashStatus,"TAP ANYWHERE TO BEGIN");
   /***Initialize the CC1101 Radio and set the frequency ***/
   CC1101_MHZ=433.92;
