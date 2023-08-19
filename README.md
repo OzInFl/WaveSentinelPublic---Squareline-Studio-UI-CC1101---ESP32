@@ -1,4 +1,5 @@
-https://ko-fi.com/ozinfl
+
+<a href='https://ko-fi.com/ozinfl' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 
 # CLIPPER1
 
@@ -14,7 +15,9 @@ Looking forward to what the community has in store for this project!
 
 Thanks to the creator of this fantastic CC1101 Library: https://github.com/LSatan/SmartRC-CC1101-Driver-Lib
 
-Also : https://github.com/1technophile/NewRemoteSwitch.git for analysis functions..
+Also RcSwitch - https://github.com/sui77/rc-switch
+
+
 
 
 Features Thus Far: 
@@ -25,6 +28,12 @@ Sub-Ghz Protocol analyzer (thanks to the SmartRC Library) - Still needs some lov
 Wifi Scanner - For 2.4Ghz Wifi - will populate the found hotspots in the Dropdown for whatever...
 Tesla Charge Port Tester - Dedicated button - Thanks to (https://github.com/fredilarsen/TeslaChargeDoorOpener) for the actual protocol rather than a capture. 
 Will Play Sound from SD card or memory (I2S) support
+
+
+Youtube links: https://youtu.be/rR51t8njWyE
+
+               https://youtu.be/rlbaQM_o_K4
+
 Various UI pages created for future use, developed With Squareline Studio. Source Files are in the LCD directory.
 
 -OzInFl
