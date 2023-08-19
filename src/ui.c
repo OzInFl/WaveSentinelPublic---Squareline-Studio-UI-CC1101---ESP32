@@ -136,7 +136,6 @@ lv_obj_t * ui_txtSettingsWifiKey;
 lv_obj_t * ui_lblSettingsWifiMode;
 lv_obj_t * ui_lblSettingsWifiModeAP;
 lv_obj_t * ui_lblSettingsWifiModeSTA;
-void ui_event_btnSettingsOTA1(lv_event_t * e);
 lv_obj_t * ui_btnSettingsOTA1;
 lv_obj_t * ui_lblSettingsSave;
 
@@ -426,14 +425,6 @@ void ui_event_btnSettingsBack(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_scrMain, LV_SCR_LOAD_ANIM_FADE_ON, 0, 0, &ui_scrMain_screen_init);
         fcnProtAnaCancel(e);
-    }
-}
-void ui_event_btnSettingsOTA1(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        fcnSettingsOTA(e);
     }
 }
 void ui_event_btnWifiBackToMain(lv_event_t * e)

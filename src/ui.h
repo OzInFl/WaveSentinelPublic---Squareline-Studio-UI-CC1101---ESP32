@@ -137,7 +137,6 @@ extern lv_obj_t * ui_txtSettingsWifiKey;
 extern lv_obj_t * ui_lblSettingsWifiMode;
 extern lv_obj_t * ui_lblSettingsWifiModeAP;
 extern lv_obj_t * ui_lblSettingsWifiModeSTA;
-void ui_event_btnSettingsOTA1(lv_event_t * e);
 extern lv_obj_t * ui_btnSettingsOTA1;
 extern lv_obj_t * ui_lblSettingsSave;
 // SCREEN: ui_scrWifiApps

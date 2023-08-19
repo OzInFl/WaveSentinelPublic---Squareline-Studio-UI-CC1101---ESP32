@@ -221,6 +221,5 @@ void ui_scrSettings_screen_init(void)
 
     lv_obj_add_event_cb(ui_btnSettingsOTA, ui_event_btnSettingsOTA, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnSettingsBack, ui_event_btnSettingsBack, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_btnSettingsOTA1, ui_event_btnSettingsOTA1, LV_EVENT_ALL, NULL);
 
 }
