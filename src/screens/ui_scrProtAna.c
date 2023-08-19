@@ -9,10 +9,10 @@ void ui_scrProtAna_screen_init(void)
 {
     ui_scrProtAna = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_scrProtAna, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_scrProtAna, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_scrProtAna, lv_color_hex(0x650D0D), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_scrProtAna, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_color(ui_scrProtAna, lv_color_hex(0x650D0D), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui_scrProtAna, LV_GRAD_DIR_HOR, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(ui_scrProtAna, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui_scrProtAna, LV_GRAD_DIR_VER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_lblProtAnalyzerTitle = lv_label_create(ui_scrProtAna);
     lv_obj_set_width(ui_lblProtAnalyzerTitle, LV_SIZE_CONTENT);   /// 1

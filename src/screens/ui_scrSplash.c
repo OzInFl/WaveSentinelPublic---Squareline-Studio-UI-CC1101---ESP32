@@ -9,7 +9,6 @@ void ui_scrSplash_screen_init(void)
 {
     ui_scrSplash = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_scrSplash, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_add_event_cb(ui_scrSplash, scr_unloaded_delete_cb, LV_EVENT_SCREEN_UNLOADED, &ui_scrSplash);
     lv_obj_set_style_bg_color(ui_scrSplash, lv_color_hex(0x525052), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_scrSplash, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_src(ui_scrSplash, &ui_img_splashbkgnd2_png, LV_PART_MAIN | LV_STATE_DEFAULT);

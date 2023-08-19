@@ -9,7 +9,6 @@ void ui_scrRCSWTenPole_screen_init(void)
 {
     ui_scrRCSWTenPole = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_scrRCSWTenPole, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_add_event_cb(ui_scrRCSWTenPole, scr_unloaded_delete_cb, LV_EVENT_SCREEN_UNLOADED, &ui_scrRCSWTenPole);
     lv_obj_set_style_bg_color(ui_scrRCSWTenPole, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_scrRCSWTenPole, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 

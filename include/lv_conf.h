@@ -50,7 +50,7 @@
 #if LV_MEM_CUSTOM == 0
     /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
     //#define LV_MEM_SIZE (48U * 1024U)          /*[bytes]*/
-    #define LV_MEM_SIZE (64U * 1024U) // REDEFINED - TROY
+    #define LV_MEM_SIZE (128U * 1024U) // REDEFINED - TROY
     /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
     #define LV_MEM_ADR 0     /*0: unused*/
     /*Instead of an address give a memory allocator that will be called to get a memory pool for LVGL. E.g. my_malloc*/
@@ -68,7 +68,7 @@
 
 /*Number of the intermediate memory buffer used during rendering and other internal processing mechanisms.
  *You will see an error log message if there wasn't enough buffers. */
-#define LV_MEM_BUF_MAX_NUM 16  //Troy changed from 16 to 32
+#define LV_MEM_BUF_MAX_NUM 32  //Troy changed from 16 to 32
 
 /*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
 #define LV_MEMCPY_MEMSET_STD 0
@@ -198,7 +198,7 @@
  *-----------*/
 
 /*Enable the log module*/
-#define LV_USE_LOG 0
+#define LV_USE_LOG 1
 #if LV_USE_LOG
 
     /*How important log should be added:
@@ -438,7 +438,7 @@
 
 #define LV_USE_ARC        0
 
-#define LV_USE_ANIMIMG    1
+#define LV_USE_ANIMIMG    0
 
 #define LV_USE_BAR        1
 
@@ -462,7 +462,7 @@
 
 #define LV_USE_LINE       0
 
-#define LV_USE_ROLLER     1   /*Requires: lv_label*/
+#define LV_USE_ROLLER     0   /*Requires: lv_label*/
 #if LV_USE_ROLLER
     #define LV_ROLLER_INF_PAGES 7 /*Number of extra "pages" when the roller is infinite*/
 #endif
@@ -515,13 +515,13 @@
 
 #define LV_USE_METER      0
 
-#define LV_USE_MSGBOX     1
+#define LV_USE_MSGBOX     0
 
 #define LV_USE_SPINBOX    0
 
 #define LV_USE_SPINNER    0
 
-#define LV_USE_TABVIEW    1
+#define LV_USE_TABVIEW    0
 
 #define LV_USE_TILEVIEW   0
 

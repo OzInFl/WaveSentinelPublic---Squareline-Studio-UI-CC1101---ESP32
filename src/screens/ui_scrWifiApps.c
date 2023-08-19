@@ -9,7 +9,6 @@ void ui_scrWifiApps_screen_init(void)
 {
     ui_scrWifiApps = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_scrWifiApps, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_add_event_cb(ui_scrWifiApps, scr_unloaded_delete_cb, LV_EVENT_SCREEN_UNLOADED, &ui_scrWifiApps);
 
     ui_imgWifiBtns = lv_img_create(ui_scrWifiApps);
     lv_img_set_src(ui_imgWifiBtns, &ui_img_mainbackground_png);

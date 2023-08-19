@@ -9,7 +9,6 @@ void ui_scrRCSWMain_screen_init(void)
 {
     ui_scrRCSWMain = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_scrRCSWMain, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_add_event_cb(ui_scrRCSWMain, scr_unloaded_delete_cb, LV_EVENT_SCREEN_UNLOADED, &ui_scrRCSWMain);
 
     ui_imgRCSWBtns = lv_img_create(ui_scrRCSWMain);
     lv_img_set_src(ui_imgRCSWBtns, &ui_img_mainbackground_png);

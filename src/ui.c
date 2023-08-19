@@ -639,8 +639,13 @@ void ui_init(void)
     ui_scrSplash_screen_init();
     ui_scrMain_screen_init();
     ui_scrProtAna_screen_init();
+    ui_scrKybdNum_screen_init();
     ui_scrPresets_screen_init();
+    ui_scrSettings_screen_init();
+    ui_scrWifiApps_screen_init();
     ui_scrWifiScanner_screen_init();
+    ui_scrRCSWMain_screen_init();
+    ui_scrRCSWTenPole_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_scrSplash);
 }
