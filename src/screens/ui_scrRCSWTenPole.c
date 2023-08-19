@@ -12,16 +12,16 @@ void ui_scrRCSWTenPole_screen_init(void)
     lv_obj_set_style_bg_color(ui_scrRCSWTenPole, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_scrRCSWTenPole, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_lblRCSW10Pole = lv_label_create(ui_scrRCSWTenPole);
-    lv_obj_set_width(ui_lblRCSW10Pole, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_lblRCSW10Pole, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_lblRCSW10Pole, 0);
-    lv_obj_set_y(ui_lblRCSW10Pole, -220);
-    lv_obj_set_align(ui_lblRCSW10Pole, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_lblRCSW10Pole, "10 POLE - RECEPTACLES");
-    lv_obj_set_style_text_color(ui_lblRCSW10Pole, lv_color_hex(0xFF9100), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_lblRCSW10Pole, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_lblRCSW10Pole, &ui_font_Verdana18, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_lblRCSWApps = lv_label_create(ui_scrRCSWTenPole);
+    lv_obj_set_width(ui_lblRCSWApps, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_lblRCSWApps, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_lblRCSWApps, 0);
+    lv_obj_set_y(ui_lblRCSWApps, -220);
+    lv_obj_set_align(ui_lblRCSWApps, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_lblRCSWApps, "RCSW APPLICATIONS");
+    lv_obj_set_style_text_color(ui_lblRCSWApps, lv_color_hex(0xFF9100), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_lblRCSWApps, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_lblRCSWApps, &ui_font_Verdana18, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_btnBackToRCSW = lv_btn_create(ui_scrRCSWTenPole);
     lv_obj_set_width(ui_btnBackToRCSW, 92);
@@ -349,6 +349,15 @@ void ui_scrRCSWTenPole_screen_init(void)
     lv_obj_set_style_text_align(ui_lblTenPoleTxOn1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_lblTenPoleTxOn1, &ui_font_Verdana14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_ddlTenProto = lv_dropdown_create(ui_scrRCSWTenPole);
+    lv_dropdown_set_options(ui_ddlTenProto, "10 Bit Outlet\n8 Bit ProtX");
+    lv_obj_set_width(ui_ddlTenProto, 150);
+    lv_obj_set_height(ui_ddlTenProto, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_ddlTenProto, 65);
+    lv_obj_set_y(ui_ddlTenProto, -120);
+    lv_obj_set_align(ui_ddlTenProto, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ddlTenProto, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+
     ui_lblRCSWStatus = lv_label_create(ui_scrRCSWTenPole);
     lv_obj_set_width(ui_lblRCSWStatus, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_lblRCSWStatus, LV_SIZE_CONTENT);    /// 1
@@ -378,15 +387,6 @@ void ui_scrRCSWTenPole_screen_init(void)
     lv_obj_set_style_text_font(ui_txtMainFreq1, &ui_font_LCD20at8BPP, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_txtMainFreq1, lv_color_hex(0x525052), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_txtMainFreq1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_ddlTenProto = lv_dropdown_create(ui_scrRCSWTenPole);
-    lv_dropdown_set_options(ui_ddlTenProto, "10 Bit Outlet\n8 Bit ProtX");
-    lv_obj_set_width(ui_ddlTenProto, 150);
-    lv_obj_set_height(ui_ddlTenProto, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_ddlTenProto, 65);
-    lv_obj_set_y(ui_ddlTenProto, -120);
-    lv_obj_set_align(ui_ddlTenProto, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_ddlTenProto, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
 
     lv_obj_add_event_cb(ui_btnBackToRCSW, ui_event_btnBackToRCSW, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_btnTenPoleTxOn, ui_event_btnTenPoleTxOn, LV_EVENT_ALL, NULL);

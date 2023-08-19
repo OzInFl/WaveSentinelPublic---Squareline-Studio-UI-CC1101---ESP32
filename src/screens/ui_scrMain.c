@@ -150,7 +150,7 @@ void ui_scrMain_screen_init(void)
     lv_obj_set_x(ui_lblMainConfig, -107);
     lv_obj_set_y(ui_lblMainConfig, 36);
     lv_obj_set_align(ui_lblMainConfig, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_lblMainConfig, "TX\nCONFIG");
+    lv_label_set_text(ui_lblMainConfig, "FUTURE\nUSE");
     lv_obj_set_style_text_color(ui_lblMainConfig, lv_color_hex(0xFF9100), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_lblMainConfig, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_lblMainConfig, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -189,7 +189,7 @@ void ui_scrMain_screen_init(void)
     lv_obj_set_x(ui_lblMainPresetTx, 105);
     lv_obj_set_y(ui_lblMainPresetTx, 36);
     lv_obj_set_align(ui_lblMainPresetTx, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_lblMainPresetTx, "P1");
+    lv_label_set_text(ui_lblMainPresetTx, "PLAY\ntest.mp3");
     lv_obj_set_style_text_color(ui_lblMainPresetTx, lv_color_hex(0xFF9100), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_lblMainPresetTx, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_lblMainPresetTx, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);

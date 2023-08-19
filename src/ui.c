@@ -180,7 +180,7 @@ lv_obj_t * ui_lblWifiScanner1;
 // SCREEN: ui_scrRCSWTenPole
 void ui_scrRCSWTenPole_screen_init(void);
 lv_obj_t * ui_scrRCSWTenPole;
-lv_obj_t * ui_lblRCSW10Pole;
+lv_obj_t * ui_lblRCSWApps;
 void ui_event_btnBackToRCSW(lv_event_t * e);
 lv_obj_t * ui_btnBackToRCSW;
 lv_obj_t * ui_lblBackToRCSW;
@@ -220,10 +220,10 @@ lv_obj_t * ui_lblBit9;
 void ui_event_btnTenPoleTxOn1(lv_event_t * e);
 lv_obj_t * ui_btnTenPoleTxOn1;
 lv_obj_t * ui_lblTenPoleTxOn1;
+lv_obj_t * ui_ddlTenProto;
 lv_obj_t * ui_lblRCSWStatus;
 void ui_event_txtMainFreq1(lv_event_t * e);
 lv_obj_t * ui_txtMainFreq1;
-lv_obj_t * ui_ddlTenProto;
 lv_obj_t * ui____initial_actions0;
 const lv_img_dsc_t * ui_imgset_splashbkgnd[1] = {&ui_img_splashbkgnd2_png};
 

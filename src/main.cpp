@@ -809,7 +809,7 @@ void setup(void)
   mySwitch.enableReceive(CCGDO2A);  // Receiver on
   mySwitch.enableTransmit(CCGDO0A); // Transmitter Enabler
 
-  initBT5();
+  //initBT5();
   // Open a file to record the signal
   recorded_signal_file = SD.open("/recorded_signal.bin", FILE_WRITE);
  
@@ -827,7 +827,7 @@ void loop()
 
   if (OTAInProgress==0){
   //Do Nothing Regarding OTA
-  void doBlue();
+  //void doBlue();
   //lv_timer_handler();
   audio.loop();
   }
