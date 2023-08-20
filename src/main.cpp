@@ -86,6 +86,10 @@ float CC1101_LAST_AVG_LQI = 0;
 float CC1101_LAST_AVG_RSSI = 0;
 //float curfreq = 315.00;
 
+//For Flipper Sub Player
+char filebuffer[1024];
+char folderbuffer[1024];
+
 
 // Create arrays to hold directory and file names
 #define MAX_DIRS 50
@@ -889,7 +893,7 @@ void loop()
 // Get directory names from SD card and populate first dropdown
 void populateDirectoryDropdown() {
   lv_dropdown_clear_options(ui_ddPresetsFolder);
-  SDInit();
+  
   root = SD.open("/");
   int i = 0;
   while (true) {
@@ -907,14 +911,12 @@ void populateDirectoryDropdown() {
     }
     entry.close();
   }
-  //root.rewindDirectory();
   
-  
-  populateFileDropdown();
+  //populateFileDropdown();
 }
 
 // Get file names from selected directory and populate second dropdown
-void populateFileDropdown() {
+void populateFileDropdown(lv_event_t * e) {
 
   lv_dropdown_clear_options(ui_ddPresetsFile);
   int i = 0;
@@ -1106,8 +1108,7 @@ void fcnSetPreset(lv_event_t * e)
 
 void fcnPresetTx(lv_event_t * e)
 {
-char filebuffer[1024];
-char folderbuffer[1024];
+
 // Get the currently selected option
 lv_dropdown_get_selected_str(ui_ddPresetsFolder, folderbuffer,1024);
 lv_dropdown_get_selected_str(ui_ddPresetsFile, filebuffer,1024);
@@ -1123,7 +1124,11 @@ CC1101_TX=false;
 ELECHOUSE_cc1101.setPA(12);
 //lv_label_set_text(ui_lblPresetsStatus,String(fullfilename).c_str());
 transmitFlipperFile(String(fullfilename).c_str(), true);
-  
+delay(20);
+SDInit();
+populateDirectoryDropdown();
+//memset(folderbuffer, 0, sizeof folderbuffer);
+//memset(filebuffer, 0, sizeof filebuffer);
 }
 
 
@@ -1165,13 +1170,14 @@ void fcnPresetPopDir(lv_event_t * e)
 {
 	// Your code here
   //lv_dropdown_clear_options(ui_ddPresetsFolder);
+  SDInit();
   populateDirectoryDropdown();
 }
 
 void fcnPopulateFileDropdown(lv_event_t * e)
 {
 	// Your code here
-  populateFileDropdown();
+  //populateFileDropdown();
 }
 
 

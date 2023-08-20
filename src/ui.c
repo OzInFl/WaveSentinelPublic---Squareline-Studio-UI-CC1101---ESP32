@@ -393,6 +393,9 @@ void ui_event_ddPresetsFolder(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
         fcnClearPresetsFilesDD(e);
     }
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        populateFileDropdown(e);
+    }
 }
 void ui_event_ddPresetsFile(lv_event_t * e)
 {

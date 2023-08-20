@@ -11,6 +11,7 @@ screens/ui_scrRCSWTenPole.c
 ui.c
 components/ui_comp_hook.c
 ui_helpers.c
+ui_events.c
 images/ui_img_splashbkgnd2_png.c
 images/ui_img_mainbackground_png.c
 images/ui_img_teslabtnicon_png.c

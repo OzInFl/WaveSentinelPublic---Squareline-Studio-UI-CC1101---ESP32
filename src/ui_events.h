@@ -20,6 +20,7 @@ void fcnGetCurfreq(lv_event_t * e);
 void fcnSetFreq(lv_event_t * e);
 void fcnSetPreset(lv_event_t * e);
 void fcnClearPresetsFilesDD(lv_event_t * e);
+void populateFileDropdown(lv_event_t * e);
 void fcnPopulateFileDropdown(lv_event_t * e);
 void fcnPresetTx(lv_event_t * e);
 void fcnSettingsOTA(lv_event_t * e);
