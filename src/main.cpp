@@ -35,7 +35,7 @@
 #include "SPIFFS.h"
 
 
-//Global Paramaters
+//Wifi Paramaters
 
 const char* ssid = "CLIPPER";
 const char* password = "987654321";
@@ -76,6 +76,7 @@ float detectedFrequency = 0.0;
 int signalDetectionMinRssi = -65;
 bool RECORDING_SIGNAL = false;
 
+//CC1101 Stuff
 float CC1101_MHZ = 433.92;
 bool CC1101_TX = false;
 int CC1101_MODULATION = 2;
@@ -84,11 +85,19 @@ float CC1101_RX_BW = 256;
 int CC1101_PKT_FORMAT = 3;
 float CC1101_LAST_AVG_LQI = 0;
 float CC1101_LAST_AVG_RSSI = 0;
+int CC1101ScanEn=0;
 //float curfreq = 315.00;
 
 //For Flipper Sub Player
 char filebuffer[1024];
 char folderbuffer[1024];
+
+//For Callbacks to LVGL Screen
+String curscreen;
+
+
+//CC1101 Scanner Flag for Start Fq and Stop Fq
+String scannerFlag = "";
 
 
 // Create arrays to hold directory and file names
@@ -126,14 +135,23 @@ File recorded_signal_file;
 File flipperFile;
 
 
-// CC1101 Stuff
+// CC1101 - RCSW Apps Stuff
 RCSwitch mySwitch = RCSwitch();
 int ProtAnaRxEn=0;
 
-// Create a buffer to store received data
-byte buffer[64];
+//cc1101 - Scanner Stuff
+float start_freq = 433;
+float stop_freq = 434;
+
+float freq = start_freq;
+long compare_freq;
+float mark_freq;
+int rssi;
+int mark_rssi = -100;
 
 
+
+//Tesla Charge Port protocol
 int txTestcode [512] = {60824, -66, 40307, -64, 19889, -100, 1757, -66, 1089, -66, 12747, -100, 11829, -68, 32647, -66, 7033, -17380, 67, -1260, 199, -132, 65, -198, 131, -100, 131, -132, 297, -134, 67, -630, 199, -66, 233, -132, 399, -134, 399, -130, 165, -396, 14485, -100, 4061, -66, 2219, -66, 23345, -66, 72679, -100, 33233, -66, 62597, -66, 44711, -66, 12647, -66, 11759, -98, 10387, -66, 3897, -68, 529, -98, 889, -66, 50761, -66, 229, -68, 17053, -64, 21881, -2366, 249, -808, 283, -804, 247, -828, 255, -824, 225, -840, 233, -830, 835, -240, 845, -240, 279, -800, 833, -276, 809, -276, 243, -804, 271, -796, 837, -276, 245, -802, 269, -798, 835, -276, 245, -808, 269, -796, 271, -802, 837, -276, 243, -806, 833, -240, 277, -804, 271, -10862, 267, -798, 269, -800, 271, -800, 271, -802, 269, -800, 271, -802, 835, -276, 813, -240, 279, -804, 833, -240, 845, -240, 279, -804, 271, -798, 833, -276, 245, -804, 269, -798, 835, -276, 245, -806, 269, -796, 271, -804, 835, -274, 245, -804, 835, -240, 279, -802, 269, -10846, 275, -806, 267, -800, 271, -804, 271, -800, 269, -800, 271, -802, 835, -276, 815, -240, 279, -800, 835, -240, 845, -274, 245, -804, 269, -798, 833, -276, 245, -802, 271, -800, 835, -276, 245, -804, 269, -798, 269, -806, 833, -276, 245, -804, 833, -276, 243, -806, 269, -10862, 269, -794, 271, -800, 269, -800, 271, -800, 271, -804, 269, -802, 835, -276, 813, -240, 279, -802, 833, -276, 811, -242, 279, -802, 269, -798, 835, -276, 245, -806, 269, -798, 837, -274, 245, -804, 271, -798, 269, -800, 835, -276, 245, -806, 831, -276, 245, -806, 269, -10856, 269, -798, 271, -800, 271, -802, 271, -802, 271, -798, 271, -804, 837, -276, 811, -274, 245, -802, 833, -276, 811, -276, 243, -802, 269, -798, 835, -276, 245, -808, 269, -796, 835, -276, 245, -806, 267, -798, 271, -806, 835, -276, 245, -802, 833, -276, 243, -806, 269, -10858, 267, -796, 269, -802, 269, -804, 271, -800, 271, -800, 271, -804, 833, -276, 811, -274, 245, -802, 833, -276, 811, -274, 243, -806, 269, -796, 835, -276, 243, -808, 269, -796, 835, -274, 247, -804, 269, -798, 269, -804, 837, -274, 245, -804, 833, -242, 277, -804, 267, -162736, 99, -1118, 363, -100, 195, -264, 229, -360, 97, -200, 755, -66, 6811, -100, 5675, -66, 6373, -98, 13705, -66, 14751, -68, 54237, -66, 32119, -66, 1531, -66, 5249, -68, 6397, -66, 44515, -100, 15541, -66, 10517, -68, 27293, -68, 20539, -66, 13969, -66, 657, -66, 3239, -98, 20847, -68, 14209, -66, 14423, -100, 42891, -100, 4619, -100, 24811, -66, 4341, -66, 10131, -66, 34427, -66, 13497, -2410, 231, -826, 269, -798, 269, -802, 269, -802, 271, -802, 271, -800, 835, -274, 811, -276, 243, -804, 837, -276, 777, -308, 243, -802, 271, -798, 837, -276, 243, -802, 269, -800, 833, -276, 245, -806, 269, -800, 271, -802, 833, -276, 243, -804, 837, -276, 243, -802, 271, -10832, 299, -796, 269, -802, 269, -800, 269, -802, 271, -804, 271, -800, 835, -276, 813, -240};
 int txTeslaCode [512] = {60824, -66, 40307, -64, 19889, -100, 1757, -66, 1089, -66, 12747, -100, 11829, -68, 32647, -66, 7033, -17380, 67, -1260, 199, -132, 65, -198, 131, -100, 131, -132, 297, -134, 67, -630, 199, -66, 233, -132, 399, -134, 399, -130, 165, -396, 14485, -100, 4061, -66, 2219, -66, 23345, -66, 72679, -100, 33233, -66, 62597, -66, 44711, -66, 12647, -66, 11759, -98, 10387, -66, 3897, -68, 529, -98, 889, -66, 50761, -66, 229, -68, 17053, -64, 21881, -2366, 249, -808, 283, -804, 247, -828, 255, -824, 225, -840, 233, -830, 835, -240, 845, -240, 279, -800, 833, -276, 809, -276, 243, -804, 271, -796, 837, -276, 245, -802, 269, -798, 835, -276, 245, -808, 269, -796, 271, -802, 837, -276, 243, -806, 833, -240, 277, -804, 271, -10862, 267, -798, 269, -800, 271, -800, 271, -802, 269, -800, 271, -802, 835, -276, 813, -240, 279, -804, 833, -240, 845, -240, 279, -804, 271, -798, 833, -276, 245, -804, 269, -798, 835, -276, 245, -806, 269, -796, 271, -804, 835, -274, 245, -804, 835, -240, 279, -802, 269, -10846, 275, -806, 267, -800, 271, -804, 271, -800, 269, -800, 271, -802, 835, -276, 815, -240, 279, -800, 835, -240, 845, -274, 245, -804, 269, -798, 833, -276, 245, -802, 271, -800, 835, -276, 245, -804, 269, -798, 269, -806, 833, -276, 245, -804, 833, -276, 243, -806, 269, -10862, 269, -794, 271, -800, 269, -800, 271, -800, 271, -804, 269, -802, 835, -276, 813, -240, 279, -802, 833, -276, 811, -242, 279, -802, 269, -798, 835, -276, 245, -806, 269, -798, 837, -274, 245, -804, 271, -798, 269, -800, 835, -276, 245, -806, 831, -276, 245, -806, 269, -10856, 269, -798, 271, -800, 271, -802, 271, -802, 271, -798, 271, -804, 837, -276, 811, -274, 245, -802, 833, -276, 811, -276, 243, -802, 269, -798, 835, -276, 245, -808, 269, -796, 835, -276, 245, -806, 267, -798, 271, -806, 835, -276, 245, -802, 833, -276, 243, -806, 269, -10858, 267, -796, 269, -802, 269, -804, 271, -800, 271, -800, 271, -804, 833, -276, 811, -274, 245, -802, 833, -276, 811, -274, 243, -806, 269, -796, 835, -276, 243, -808, 269, -796, 835, -274, 247, -804, 269, -798, 269, -804, 837, -274, 245, -804, 833, -242, 277, -804, 267, -162736, 99, -1118, 363, -100, 195, -264, 229, -360, 97, -200, 755, -66, 6811, -100, 5675, -66, 6373, -98, 13705, -66, 14751, -68, 54237, -66, 32119, -66, 1531, -66, 5249, -68, 6397, -66, 44515, -100, 15541, -66, 10517, -68, 27293, -68, 20539, -66, 13969, -66, 657, -66, 3239, -98, 20847, -68, 14209, -66, 14423, -100, 42891, -100, 4619, -100, 24811, -66, 4341, -66, 10131, -66, 34427, -66, 13497, -2410, 231, -826, 269, -798, 269, -802, 269, -802, 271, -802, 271, -800, 835, -274, 811, -276, 243, -804, 837, -276, 777, -308, 243, -802, 271, -798, 837, -276, 243, -802, 269, -800, 833, -276, 245, -806, 269, -800, 271, -802, 833, -276, 243, -804, 837, -276, 243, -802, 271, -10832, 299, -796, 269, -802, 269, -800, 269, -802, 271, -804, 271, -800, 835, -276, 813, -240};
 #define len_txTesla1 2589
@@ -418,17 +436,7 @@ void sendSamples(int samples[], int samplesLength) {
 
 
 
-void Rxloop(){
-	if (millis() > (last_RXmillis + 5000)){
-    int curRSSI = ELECHOUSE_cc1101.getRssi();
-		ELECHOUSE_cc1101.goSleep();
-    //lv_textarea_set_text(ui_txtMainRxBuffer,String(RXbuffer).c_str());
-		Serial.println(RXbuffer);
-		RXbuffer = "";
-		ELECHOUSE_cc1101.SetRx();
-		last_RXmillis = millis();
-	}
-}
+
 
 void radioHandlerOnChange() {
 	int delta_micros = micros() - last_micros;
@@ -448,8 +456,10 @@ void radioHandlerOnChange() {
 
 void handleFlipperCommandLine(String command, String value){
     if(command == "Frequency"){
-      float frequency = value.toFloat() / 1000000;   
-      lv_label_set_text(ui_lblPresetsStatus,String(frequency).c_str());
+      float frequency = value.toFloat() / 1000000; 
+      String Fq = "Freq: "; 
+      Fq.concat(frequency); 
+      lv_label_set_text(ui_lblPresetsStatus, String(Fq).c_str());
       ELECHOUSE_cc1101.setMHZ(frequency);
       CC1101_MHZ = frequency;
     }
@@ -543,114 +553,14 @@ void transmitFlipperFile(String filename, bool transmit){
               break;
         }
     }
-
+    
     flipperFile.close();
        
   }
   
 }
 
-void ProtAnalyzerloop() {
-   
-    
 
-    if (mySwitch.available()) {
-    lv_textarea_set_text(ui_txtProtAnaResults,"");
-    lv_textarea_set_text(ui_txtProtAnaProtocol,"");
-    lv_textarea_set_text(ui_txtProtAnaDBPTD,"");
-    lv_textarea_set_text(ui_txtProtAnaReceived,"");
-
-
-    int value = mySwitch.getReceivedValue();
-    
-    if (value == 0) {
-      lv_textarea_set_text(ui_txtProtAnaResults,"Unknown encoding");
-    } else {
-      int databuffer[64]; // get a copy of the received timings before they are overwritten
-      int numberoftimings = 2 * mySwitch.getReceivedBitlength() + 2;
-      if(numberoftimings > 64) numberoftimings = 64;
-      for (int i = 0; i < numberoftimings; i++) {
-       databuffer[i] = mySwitch.getReceivedRawdata()[i];
-      }
-      
-      lv_textarea_add_text(ui_txtProtAnaResults,"-----RAW PACKET INFO-----");
-      //lv_textarea_add_text(ui_txtProtAnaResults,"\r\n");
-      //lv_textarea_add_text(ui_txtProtAnaResults,"Received: ");
-      lv_textarea_set_text(ui_txtProtAnaReceived, String(mySwitch.getReceivedValue()).c_str());
-      //lv_textarea_add_text(ui_txtProtAnaResults,"\r\n");
-      //lv_textarea_add_text(ui_txtProtAnaBitLength,"bit length: ");
-      lv_textarea_set_text(ui_txtProtAnaBitLength, String(mySwitch.getReceivedBitlength()).c_str());
-      //lv_textarea_add_text(ui_txtProtAnaResults,"\r\n");
-      //lv_textarea_add_text(ui_txtProtAnaResults,"Protocol: ");
-      lv_textarea_add_text(ui_txtProtAnaProtocol, String(mySwitch.getReceivedProtocol()).c_str());
-      //lv_textarea_add_text(ui_txtProtAnaResults,"\r\n");
-      //lv_textarea_add_text(ui_txtProtAnaResults,"Data bit Offset: ");
-      unsigned int databitsoffset = abs( (int)mySwitch.getReceivedLevelInFirstTiming() - (int)mySwitch.getReceivedInverted());
-      //lv_textarea_add_text(ui_txtProtAnaResults, std::to_string(mySwitch.getReceivedLevelInFirstTiming()).c_str());
-      //lv_textarea_add_text(ui_txtProtAnaResults, std::to_string(mySwitch.getReceivedInverted()).c_str());
-      //lv_textarea_add_text(ui_txtProtAnaResults, std::to_string(databitsoffset).c_str());
-      unsigned long dataduration = 0;
-      for (unsigned int i = 1 + databitsoffset; i < numberoftimings - 1 + databitsoffset; i++) {
-        dataduration += databuffer[i];
-      }
-      //lv_textarea_add_text(ui_txtProtAnaResults,"data bits of pulse train duration: ");
-      lv_textarea_set_text(ui_txtProtAnaDBPTD,String(dataduration).c_str());
-      //lv_textarea_add_text(ui_txtProtAnaResults,"\r\n");
-      unsigned int averagebitduration = (int)(0.5 + ((double)dataduration)/mySwitch.getReceivedBitlength());
-      unsigned int protocolratio = (unsigned int)(0.5 + ((double)(averagebitduration - mySwitch.getReceivedDelay())) / (double)mySwitch.getReceivedDelay());
-      lv_textarea_add_text(ui_txtProtAnaResults,"RX delay:  ");
-      lv_textarea_add_text(ui_txtProtAnaResults,String(mySwitch.getReceivedDelay()).c_str());
-    
-      char buffer[10]; // assuming the integer will be less than 10 digits
-int value = (databitsoffset==0) ? 
-        (int) (0.5 + (double)databuffer[2*mySwitch.getReceivedBitlength()+1]/(double)mySwitch.getReceivedDelay())
-        :
-        (int) (0.5 + (double)databuffer[0]/(double)mySwitch.getReceivedDelay());
-itoa(value, buffer, 10);
-lv_textarea_add_text(ui_txtProtAnaResults, buffer);
-
-      lv_textarea_add_text(ui_txtProtAnaResults,", ");
-
-      char buffer2[10]; // assuming the integer will be less than 10 digits
-int value2 = (databitsoffset==0) ? 
-        (int) (0.5 + (double)databuffer[0]/(double)mySwitch.getReceivedDelay())
-        :
-        (int) (0.5 + (double)databuffer[1]/(double)mySwitch.getReceivedDelay());
-itoa(value2, buffer2, 10);
-lv_textarea_add_text(ui_txtProtAnaResults, buffer2);
-      
-      lv_textarea_add_text(ui_txtProtAnaResults," }, { ");
-      lv_textarea_add_text(ui_txtProtAnaResults,"1");
-      lv_textarea_add_text(ui_txtProtAnaResults,", ");
-      lv_textarea_add_text(ui_txtProtAnaResults,String(protocolratio).c_str());
-      lv_textarea_add_text(ui_txtProtAnaResults," }, { ");
-      lv_textarea_add_text(ui_txtProtAnaResults,String(protocolratio).c_str());
-      lv_textarea_add_text(ui_txtProtAnaResults,", ");
-      lv_textarea_add_text(ui_txtProtAnaResults,"1");
-      lv_textarea_add_text(ui_txtProtAnaResults," }, ");
-      lv_textarea_add_text(ui_txtProtAnaResults,(mySwitch.getReceivedInverted()) ? "true" : "false" );
-      lv_textarea_add_text(ui_txtProtAnaResults," }");
-
-      // raw signal
-      lv_textarea_add_text(ui_txtProtAnaResults,"==============");
-      lv_textarea_add_text(ui_txtProtAnaResults,"first level ");
-      lv_textarea_add_text(ui_txtProtAnaResults,(mySwitch.getReceivedLevelInFirstTiming() == 0) ? "down" : "up" );
-      for (int i = 0; i < 2*mySwitch.getReceivedBitlength()+2 - 1 + databitsoffset; i++) {
-        lv_textarea_add_text(ui_txtProtAnaResults,String(databuffer[i]).c_str());
-        lv_textarea_add_text(ui_txtProtAnaResults," ");
-        if((i - databitsoffset) % 16 == 0) lv_textarea_add_text(ui_txtProtAnaResults,"");
-      }
-      if ((2*mySwitch.getReceivedBitlength()+2 - 1 + databitsoffset - 1) % 16 != 0) lv_textarea_add_text(ui_txtProtAnaResults,"");
-      if (databitsoffset != 1) lv_textarea_add_text(ui_txtProtAnaResults,String(databuffer[2*mySwitch.getReceivedBitlength()+1]).c_str());
-
-      // plot signal in spreadsheet
-      lv_textarea_add_text(ui_txtProtAnaResults,"==============");
-     
-    }
-
-    mySwitch.resetAvailable();
-  }
-}
 
 void callback(){
   //placeholder callback function
@@ -716,7 +626,7 @@ void guiHandler()
 // MAIN SETUP FUNCTION --------------------------------------------------------------------------- MAIN SETUP FUNCTION //
 void setup(void)
 {
-  
+  //mySwitch.enableReceive(CCGDO2A);  // Receiver on interrupt 0 => that is pin #21
   //initialise instance of the SPIClass attached to VSPI 
   vspi = new SPIClass(VSPI);
   vspi->begin(VSPI_SCLK, VSPI_MISO, VSPI_MOSI, VSPI_SSA); //SCLK, MISO, MOSI, SS
@@ -813,13 +723,157 @@ void setup(void)
   mySwitch.enableReceive(CCGDO2A);  // Receiver on
   mySwitch.enableTransmit(CCGDO0A); // Transmitter Enabler
 
-  //initBT5();
   // Open a file to record the signal
   recorded_signal_file = SD.open("/recorded_signal.bin", FILE_WRITE);
  
-  //lv_textarea_set_cursor_type(ui_txtProtAnaResults, LV_CURSOR_NONE);
 }
 
+
+// CC1101 ANALYZER FUNCTIONS ////
+
+static const char* bin2tristate(const char* bin);
+static char * dec2binWzerofill(unsigned long Dec, unsigned int bitLength);
+
+void output(unsigned long decimal, unsigned int length, unsigned int pktdelay, unsigned int* raw, unsigned int protocol) {
+
+  
+  const char* b = dec2binWzerofill(decimal, length);
+
+  lv_textarea_set_text(ui_txtProtAnaReceived,String(decimal).c_str()); //Decimal Value
+  lv_textarea_set_text(ui_txtProtAnaBitLength,String(length).c_str()); //Bit Legnth
+  lv_textarea_set_text(ui_txtProtAnaBinary,String(b).c_str()); // Binary
+  lv_textarea_set_text(ui_txtProtAnaPulsLen,String(pktdelay).c_str()); //Pulse Length
+  lv_textarea_set_text(ui_txtProtAnaProtAnaTriState,String(bin2tristate( b)).c_str()); //TriState
+  lv_textarea_set_text(ui_txtProtAnaProtocol,String(protocol).c_str()); //Protocol
+
+  String rawString = "";
+  for (unsigned int i=0; i<= length*2; i++) {
+    rawString+=raw[i];
+    rawString+=",";
+  }
+  
+  lv_textarea_set_text(ui_txtProtAnaResults,String(rawString).c_str());
+  
+}
+
+static const char* bin2tristate(const char* bin) {
+  static char returnValue[50];
+  int pos = 0;
+  int pos2 = 0;
+  while (bin[pos]!='\0' && bin[pos+1]!='\0') {
+    if (bin[pos]=='0' && bin[pos+1]=='0') {
+      returnValue[pos2] = '0';
+    } else if (bin[pos]=='1' && bin[pos+1]=='1') {
+      returnValue[pos2] = '1';
+    } else if (bin[pos]=='0' && bin[pos+1]=='1') {
+      returnValue[pos2] = 'F';
+    } else {
+      return "not applicable";
+    }
+    pos = pos+2;
+    pos2++;
+  }
+  returnValue[pos2] = '\0';
+  return returnValue;
+}
+
+static char * dec2binWzerofill(unsigned long Dec, unsigned int bitLength) {
+  static char bin[64]; 
+  unsigned int i=0;
+
+  while (Dec > 0) {
+    bin[32+i++] = ((Dec & 1) > 0) ? '1' : '0';
+    Dec = Dec >> 1;
+  }
+
+  for (unsigned int j = 0; j< bitLength; j++) {
+    if (j >= bitLength - i) {
+      bin[j] = bin[ 31 + i - (j - (bitLength - i)) ];
+    } else {
+      bin[j] = '0';
+    }
+  }
+  bin[bitLength] = '\0';
+  
+  return bin;
+}
+
+void ProtAnalyzerloop() {
+   
+ if (mySwitch.available()) {
+    output(mySwitch.getReceivedValue(), mySwitch.getReceivedBitlength(), mySwitch.getReceivedDelay(), mySwitch.getReceivedRawdata(),mySwitch.getReceivedProtocol());
+    mySwitch.resetAvailable();
+  }
+
+}
+
+
+void CC1101Scanloop() {
+  mySwitch.enableReceive(CCGDO2A);
+
+  ELECHOUSE_cc1101.setRxBW(58);
+  ELECHOUSE_cc1101.SetRx(freq);
+
+  ELECHOUSE_cc1101.setMHZ(freq);
+  rssi = ELECHOUSE_cc1101.getRssi();
+
+  // Serial.print( rssi);
+  // Serial.print( ",");
+
+  if (rssi > -200)
+  {
+    if (rssi > mark_rssi)
+    {
+      mark_rssi = rssi;
+      mark_freq = freq;
+    }
+  }
+
+  freq += 0.01;
+
+  if (freq > stop_freq)
+  {
+    //lv_textarea_add_text(ui_txtScannerData,".");
+    //Serial.print(".");
+    freq = start_freq;
+    String threshVal = lv_label_get_text(ui_lblThreshold);
+    int thVal = threshVal.toInt();
+    
+    //map(threshVal,-40,-80,40,80);
+    if (mark_rssi > thVal)
+    {
+
+      long fr = mark_freq * 100;
+
+      if (fr == compare_freq)
+      {
+        lv_textarea_add_text(ui_txtScannerData," ");
+        //Serial.println();
+        lv_textarea_add_text(ui_txtScannerData,"Freq: ");
+        lv_textarea_add_text(ui_txtScannerData,String(mark_freq).c_str());
+        lv_textarea_add_text(ui_txtScannerData," Rssi: ");
+        lv_textarea_add_text(ui_txtScannerData,String(mark_rssi).c_str());
+        //lv_obj_t * ui_txtScannerData;
+        char test_msg_buf[] = "\n";
+        lv_textarea_add_text(ui_txtScannerData, test_msg_buf);
+        mark_rssi = -100;
+        compare_freq = 0;
+        mark_freq = 0;
+      }
+      else
+      {
+        compare_freq = mark_freq * 100;
+        freq = mark_freq - 0.10;
+        mark_freq = 0;
+        mark_rssi = -100;
+      }
+    }
+  }
+}
+
+
+
+/////// END CC1101 SCAN Functions ///////////////////////////////////
 
 
 
@@ -828,12 +882,8 @@ void setup(void)
 void loop()
 {
   
-
   if (OTAInProgress==0){
-  //Do Nothing Regarding OTA
-  //void doBlue();
-  //lv_timer_handler();
-  audio.loop();
+    audio.loop();
   }
 
   if (OTAInProgress==1){
@@ -842,15 +892,15 @@ void loop()
   }
 
   if(ProtAnaRxEn==1){
-    
-   
-      ProtAnalyzerloop();
+     ProtAnalyzerloop();
     }
 
+  if(CC1101ScanEn==1){
+    CC1101Scanloop();
   }
 
 
-
+  }
 
  /// AUX FUNCTIONS FOR LCD ----------------------------------------------------------------------- AUX FUNCTIONS FOR LCD //
 
@@ -1019,7 +1069,7 @@ void handleUpdate() {
 
 
 
-// LCD Events - Should this be moved back to the ui_events ?? 
+// LCD Events - Should this be moved back to the ui_events ////////////////////////////////////////////////////
 
 void setTxFlag(){
   lv_label_set_text(ui_lblMainStatus,"TRANSMITTING");
@@ -1084,12 +1134,14 @@ void fcnTxTest(lv_event_t * e)
 void fcnTeslaTx(lv_event_t * e)
 {
 	// Your code here
- lv_label_set_text_static(ui_lblMainStatus,"TX Tesla Begin");
+ 
   delay(100);
   sendTeslaSignal(315.00);
   delay(200);
   sendTeslaSignal(433.92);
-  lv_label_set_text_static(ui_lblMainStatus,"TX Tesla Complete");
+  lv_label_set_text_static(ui_lblPresetsStatus,"TX Tesla Complete");
+  SDInit();
+  populateDirectoryDropdown();
   
 }
 
@@ -1108,12 +1160,10 @@ void fcnSetPreset(lv_event_t * e)
 
 void fcnPresetTx(lv_event_t * e)
 {
-
 // Get the currently selected option
 lv_dropdown_get_selected_str(ui_ddPresetsFolder, folderbuffer,1024);
 lv_dropdown_get_selected_str(ui_ddPresetsFile, filebuffer,1024);
-// Store the selected option in a C++ string variable
-//String file2tx;
+
 std::string selected_folder(folderbuffer);
 std::string selected_file(filebuffer);
 String fullfilename="/";
@@ -1125,16 +1175,16 @@ ELECHOUSE_cc1101.setPA(12);
 //lv_label_set_text(ui_lblPresetsStatus,String(fullfilename).c_str());
 transmitFlipperFile(String(fullfilename).c_str(), true);
 delay(20);
+lv_label_set_text(ui_lblPresetsTxFile, String(fullfilename).c_str());
 SDInit();
 populateDirectoryDropdown();
-//memset(folderbuffer, 0, sizeof folderbuffer);
-//memset(filebuffer, 0, sizeof filebuffer);
 }
 
 
 void fcnProtAnaRxEn(lv_event_t * e)
 {
-    
+    mySwitch.enableReceive(CCGDO2A);
+    CC1101_MHZ = atof(lv_textarea_get_text(ui_txtMainFreq));
        lv_label_set_text(ui_lblProtAnaRXEn,"RX ON");
        ELECHOUSE_cc1101.SetRx(CC1101_MHZ);
        CC1101_TX=false;
@@ -1159,17 +1209,19 @@ void fcnProtAnaCancel(lv_event_t * e)
 void fcnProtAnaClear(lv_event_t * e)
 {
 	// Your code here
+  lv_textarea_set_text(ui_txtProtAnaBinary,"-"); // Binary
+  lv_textarea_set_text(ui_txtProtAnaPulsLen,"-"); //Pulse Length
+  lv_textarea_set_text(ui_txtProtAnaProtAnaTriState,"-"); //TriState
+  lv_textarea_set_text(ui_txtProtAnaProtocol,"-"); //Protocol
   lv_textarea_set_text(ui_txtProtAnaResults,"");
   lv_textarea_set_text(ui_txtProtAnaBitLength,"-");
-    lv_textarea_set_text(ui_txtProtAnaProtocol,"-");
-    lv_textarea_set_text(ui_txtProtAnaDBPTD,"-");
-    lv_textarea_set_text(ui_txtProtAnaReceived,"-");
+  lv_textarea_set_text(ui_txtProtAnaReceived,"");
 }
 
 void fcnPresetPopDir(lv_event_t * e)
 {
 	// Your code here
-  //lv_dropdown_clear_options(ui_ddPresetsFolder);
+  //populate the flipper .sub preset directory dd
   SDInit();
   populateDirectoryDropdown();
 }
@@ -1177,7 +1229,8 @@ void fcnPresetPopDir(lv_event_t * e)
 void fcnPopulateFileDropdown(lv_event_t * e)
 {
 	// Your code here
-  //populateFileDropdown();
+  lv_label_set_text(ui_lblPresetsTxFile, "");
+  
 }
 
 
@@ -1194,17 +1247,7 @@ void fcnMainPreTX(lv_event_t * e)
 
 }
 
-void fcnGetCurfreq(lv_event_t * e)
-{
-  CC1101_MHZ = atof(lv_textarea_get_text(ui_txtMainFreq));
-  lv_textarea_set_text(ui_txtKybdFreq,String(CC1101_MHZ).c_str());
-}
 
-void fcnSetFreq(lv_event_t * e)
-{
-  CC1101_MHZ = atof(lv_textarea_get_text(ui_txtKybdFreq));
-  lv_textarea_set_text(ui_txtMainFreq,String(CC1101_MHZ).c_str());
-}
 
 void fcnReset(lv_event_t * e)
 {
@@ -1235,6 +1278,22 @@ void fcnSettingsOTA(lv_event_t * e)
   server.begin();
   
 }
+
+
+void fcnRotateLCD(lv_event_t * e)
+{
+	// Your code here
+  if(lcd.getRotation()==2){
+    lcd.clearDisplay();
+  lcd.setRotation(0);
+  ui_init();
+  }else if(lcd.getRotation()==0){
+    lcd.clearDisplay();
+  lcd.setRotation(2);
+  ui_init();
+  }
+}
+
 
 
 void fcnMainConfig(lv_event_t * e)
@@ -1285,6 +1344,9 @@ void fcnScanWifi(lv_event_t * e)
 
 void fcnRCSWTXOn(lv_event_t * e)
 {
+   
+  CC1101_TX=true;
+  CC1101_MHZ = atof(lv_textarea_get_text(ui_txt10PoleFreq));
   lv_label_set_text(ui_lblRCSWStatus,"TX 'On' Command.");
   String FirstFive = lv_label_get_text(ui_lblBit0);
   FirstFive += lv_label_get_text(ui_lblBit1);
@@ -1298,16 +1360,22 @@ void fcnRCSWTXOn(lv_event_t * e)
   SecondFive += lv_label_get_text(ui_lblBit8);
   SecondFive += lv_label_get_text(ui_lblBit9);
 
+  ELECHOUSE_cc1101.SetTx(CC1101_MHZ);
+
   mySwitch.switchOn(String(FirstFive).c_str(),String(SecondFive).c_str());
   //delay(1000);
   String TxResult="TX ON: ";
   TxResult +=FirstFive;
   TxResult+=SecondFive;
   lv_label_set_text(ui_lblRCSWStatus,String(TxResult).c_str());
+  
 }
 void fcnRCSWTXOff(lv_event_t * e)
 {
-lv_label_set_text(ui_lblRCSWStatus,"TX 'Off' Command.");
+  mySwitch.enableTransmit(CCGDO0A);
+  CC1101_TX=true;
+  CC1101_MHZ = atof(lv_textarea_get_text(ui_txt10PoleFreq));
+  lv_label_set_text(ui_lblRCSWStatus,String(CC1101_MHZ).c_str()); //"TX 'Off' Command.");
   String FirstFive = lv_label_get_text(ui_lblBit0);
   FirstFive += lv_label_get_text(ui_lblBit1);
   FirstFive += lv_label_get_text(ui_lblBit2);
@@ -1320,11 +1388,132 @@ lv_label_set_text(ui_lblRCSWStatus,"TX 'Off' Command.");
   SecondFive += lv_label_get_text(ui_lblBit8);
   SecondFive += lv_label_get_text(ui_lblBit9);
 
+  ELECHOUSE_cc1101.SetTx(CC1101_MHZ);
+
   mySwitch.switchOff(String(FirstFive).c_str(),String(SecondFive).c_str());
   //delay(1000);
   String TxResult="TX OFF: ";
   TxResult +=FirstFive;
-  TxResult+=SecondFive;
+  TxResult +=SecondFive;
   lv_label_set_text(ui_lblRCSWStatus,String(TxResult).c_str());
 }
+
+
+void fcnGetCurfreq(lv_event_t * e)
+{
+  if(curscreen=="ui_scrRCSWMain"){CC1101_MHZ = atof(lv_textarea_get_text(ui_txt10PoleFreq)); lv_textarea_set_text(ui_txtKybdFreq,String(CC1101_MHZ).c_str());}
+  if(curscreen=="ui_scrProtAna"){CC1101_MHZ = atof(lv_textarea_get_text(ui_txtMainFreq));  lv_textarea_set_text(ui_txtKybdFreq,String(CC1101_MHZ).c_str());}
+  if(curscreen=="ui_scrCC1101Scan"){if(scannerFlag=="Start"){CC1101_MHZ = atof(lv_textarea_get_text(ui_txtScanStartFq)); lv_textarea_set_text(ui_txtKybdFreq,String(CC1101_MHZ).c_str());}else{CC1101_MHZ = atof(lv_textarea_get_text(ui_txtScanStopFq));lv_textarea_set_text(ui_txtKybdFreq,String(CC1101_MHZ).c_str());}
+  }
+}
+
+void fcnSetFreq(lv_event_t * e)
+{
+  //Get absolute Fq from the Kybd entry screen..
+  CC1101_MHZ = atof(lv_textarea_get_text(ui_txtKybdFreq));
+  
+  //If on the Analyzer screen do this
+  if (curscreen=="ui_scrProtAna") {//Get absolute Fq from the Kybd entry screen..
+  CC1101_MHZ = atof(lv_textarea_get_text(ui_txtKybdFreq));lv_textarea_set_text(ui_txtMainFreq,String(CC1101_MHZ).c_str()); lv_scr_load(ui_scrProtAna);}
+  
+  //If on the CC1101Scanner screen do this
+  if (curscreen=="ui_scrCC1101Scan") {    
+    if(scannerFlag=="Start"){lv_textarea_set_text(ui_txtScanStartFq,String(CC1101_MHZ).c_str());}else{lv_textarea_set_text(ui_txtScanStopFq,String(CC1101_MHZ).c_str());}
+  lv_scr_load(ui_scrCC1101Scan);}
+  
+  //If on the Analyzer screen do this
+  if (curscreen=="ui_scrRCSWMain") {CC1101_MHZ = atof(lv_textarea_get_text(ui_txtKybdFreq));lv_textarea_set_text(ui_txt10PoleFreq,String(CC1101_MHZ).c_str()); lv_scr_load(ui_scrRCSWMain);}
+  
+  
+}
+
+
+void fcnKybdFreqCncl(lv_event_t * e)
+{
+  // Your code here
+  if (curscreen=="ui_scrProtAna") {
+       lv_scr_load(ui_scrProtAna);}
+  
+  if (curscreen=="ui_scrCC1101Scan") {
+       lv_scr_load(ui_scrCC1101Scan);}
+
+  if (curscreen=="ui_scrRCSWMain") {
+       lv_scr_load(ui_scrRCSWMain);}     
+}
+
+
+void fcnCC1101ScanOn(lv_event_t * e)
+{
+	// Your code here
+  mySwitch.enableReceive(CCGDO2A);
+  start_freq = CC1101_MHZ = atof(lv_textarea_get_text(ui_txtScanStartFq));
+  stop_freq = CC1101_MHZ = atof(lv_textarea_get_text(ui_txtScanStopFq));
+  freq=start_freq;
+  CC1101ScanEn=1;
+  
+}
+
+void fcnCC1101ScanOff(lv_event_t * e)
+{
+	// Your code here
+  CC1101ScanEn=0;
+}
+
+
+void fcnScannerClear(lv_event_t * e)
+{
+	// Your code here
+  lv_textarea_set_text(ui_txtScannerData,"");
+}
+
+
+
+void fcnScrProtana(lv_event_t * e)
+{
+	// Your code here
+  curscreen="ui_scrProtAna";
+}
+
+void fcnScrCC1101Scan(lv_event_t * e)
+{
+	// Your code here
+  curscreen="ui_scrCC1101Scan";
+}
+
+void fcnScrRCSW(lv_event_t * e)
+{
+	// Your code here
+  curscreen="ui_scrRCSWMain";
+}
+
+void fcnScrWifi(lv_event_t * e)
+{
+	// Your code here
+  curscreen="ui_scrWifiApps";
+}
+
+void fcnScrPresets(lv_event_t * e)
+{
+	// Your code here
+  curscreen="ui_scrPresets";
+}
+
+void fcnScrSettings(lv_event_t * e)
+{
+	// Your code here
+  curscreen="ui_scrSettings";
+}
+
+void fcnSetStartFlag(lv_event_t * e)
+{
+	// Your code here
+  scannerFlag = "Start";
+}
+
+void fcnSetStopFlag(lv_event_t * e)
+{
+	// Your code here
+  scannerFlag = "Stop";
+}
+
 

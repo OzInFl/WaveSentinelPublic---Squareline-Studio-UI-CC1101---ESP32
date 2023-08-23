@@ -10,24 +10,36 @@
 extern "C" {
 #endif
 
+void fcnScrCC1101Scan(lv_event_t * e);
+void fcnScrRCSW(lv_event_t * e);
 void fcnPresetPopDir(lv_event_t * e);
+void fcnScrPresets(lv_event_t * e);
 void fcnMainPreTX(lv_event_t * e);
-void fcnTeslaTx(lv_event_t * e);
+void fcnScrSettings(lv_event_t * e);
+void fcnScrWifi(lv_event_t * e);
+void fcnScrProtana(lv_event_t * e);
 void fcnProtAnaRxOff(lv_event_t * e);
 void fcnProtAnaClear(lv_event_t * e);
 void fcnProtAnaRxEn(lv_event_t * e);
 void fcnGetCurfreq(lv_event_t * e);
 void fcnSetFreq(lv_event_t * e);
-void fcnSetPreset(lv_event_t * e);
+void fcnKybdFreqCncl(lv_event_t * e);
 void fcnClearPresetsFilesDD(lv_event_t * e);
 void populateFileDropdown(lv_event_t * e);
 void fcnPopulateFileDropdown(lv_event_t * e);
 void fcnPresetTx(lv_event_t * e);
+void fcnTeslaTx(lv_event_t * e);
 void fcnSettingsOTA(lv_event_t * e);
 void fcnProtAnaCancel(lv_event_t * e);
+void fcnRotateLCD(lv_event_t * e);
 void fcnScanWifi(lv_event_t * e);
 void fcnRCSWTXOn(lv_event_t * e);
 void fcnRCSWTXOff(lv_event_t * e);
+void fcnSetStartFlag(lv_event_t * e);
+void fcnSetStopFlag(lv_event_t * e);
+void fcnCC1101ScanOn(lv_event_t * e);
+void fcnCC1101ScanOff(lv_event_t * e);
+void fcnScannerClear(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

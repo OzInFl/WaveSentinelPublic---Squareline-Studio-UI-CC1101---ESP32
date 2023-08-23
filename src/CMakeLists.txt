@@ -5,20 +5,18 @@ SET(SOURCES screens/ui_scrSplash.c
     screens/ui_scrPresets.c
     screens/ui_scrSettings.c
     screens/ui_scrWifiApps.c
-    screens/ui_scrWifiScanner.c
     screens/ui_scrRCSWMain.c
-    screens/ui_scrRCSWTenPole.c
+    screens/ui_scrCC1101Scan.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
-    ui_events.c
     images/ui_img_splashbkgnd2_png.c
     images/ui_img_mainbackground_png.c
-    images/ui_img_teslabtnicon_png.c
     images/ui_img_wifilogo_png.c
     images/ui_img_analyzericon_png.c
     images/ui_img_subrecordplay_png.c
     images/ui_img_flippericon_png.c
+    images/ui_img_hackbkgnd2_png.c
     images/ui_img_blankpgbkgnd_png.c
     fonts/ui_font_LCD20at8BPP.c
     fonts/ui_font_LCD22at8BPP.c

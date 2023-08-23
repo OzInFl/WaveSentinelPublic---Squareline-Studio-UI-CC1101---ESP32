@@ -25,6 +25,7 @@ extern lv_obj_t * ui_lblTitle;
 // SCREEN: ui_scrMain
 void ui_scrMain_screen_init(void);
 extern lv_obj_t * ui_scrMain;
+void ui_event_btnMainConfig(lv_event_t * e);
 extern lv_obj_t * ui_btnMainConfig;
 void ui_event_btnMainRCSW(lv_event_t * e);
 extern lv_obj_t * ui_btnMainRCSW;
@@ -33,8 +34,8 @@ extern lv_obj_t * ui_btnMainPreset;
 extern lv_obj_t * ui_btnMain9;
 void ui_event_btnMainPresetTX(lv_event_t * e);
 extern lv_obj_t * ui_btnMainPresetTX;
-void ui_event_btnMainTesla(lv_event_t * e);
-extern lv_obj_t * ui_btnMainTesla;
+extern lv_obj_t * ui_btnMainRs485;
+extern lv_obj_t * ui_lblMainRs485;
 void ui_event_btnMainSettings(lv_event_t * e);
 extern lv_obj_t * ui_btnMainSettings;
 void ui_event_btnMainWifi(lv_event_t * e);
@@ -47,12 +48,11 @@ extern lv_obj_t * ui_lblMainProtAna;
 extern lv_obj_t * ui_lblMainPresetTx;
 extern lv_obj_t * ui_lblMainStatus;
 extern lv_obj_t * ui_lblMainSettings;
-extern lv_obj_t * ui_lblMainMenu;
 extern lv_obj_t * ui_Image2;
 extern lv_obj_t * ui_Image1;
 extern lv_obj_t * ui_Image3;
 extern lv_obj_t * ui_Image4;
-extern lv_obj_t * ui_lblProtAnalyzerTitle2;
+extern lv_obj_t * ui_Image5;
 // SCREEN: ui_scrProtAna
 void ui_scrProtAna_screen_init(void);
 extern lv_obj_t * ui_scrProtAna;
@@ -74,12 +74,15 @@ extern lv_obj_t * ui_lblProtAnaReceived;
 extern lv_obj_t * ui_lblProtAnaBitLength;
 extern lv_obj_t * ui_txtProtAnaReceived;
 extern lv_obj_t * ui_txtProtAnaBitLength;
-extern lv_obj_t * ui_lblProtAnaProtocol;
+extern lv_obj_t * ui_lblProtAnaBinary;
+extern lv_obj_t * ui_txtProtAnaBinary;
+extern lv_obj_t * ui_lblProtAnaPulsLen;
+extern lv_obj_t * ui_txtProtAnaPulsLen;
+extern lv_obj_t * ui_lblProtAnaTriState;
+extern lv_obj_t * ui_txtProtAnaProtAnaTriState;
 extern lv_obj_t * ui_txtProtAnaProtocol;
-extern lv_obj_t * ui_lblProtAnaDBPTD;
-extern lv_obj_t * ui_txtProtAnaDBPTD;
-extern lv_obj_t * ui_lblProtAnaPropProt;
-extern lv_obj_t * ui_txtProtAnaProtAnaPropProt;
+extern lv_obj_t * ui_lblProtAnaProtocol;
+extern lv_obj_t * ui_Label1;
 // SCREEN: ui_scrKybdNum
 void ui_scrKybdNum_screen_init(void);
 extern lv_obj_t * ui_scrKybdNum;
@@ -102,11 +105,9 @@ extern lv_obj_t * ui_lblPresetsFolder;
 extern lv_obj_t * ui_lblPresetsFile;
 void ui_event_btnPresetsOk(lv_event_t * e);
 extern lv_obj_t * ui_btnPresetsOk;
-void ui_event_btnPresetsCncl(lv_event_t * e);
-extern lv_obj_t * ui_btnPresetsCncl;
-extern lv_obj_t * ui_lblPresetsCncl;
-extern lv_obj_t * ui_lblPresetsOk;
+extern lv_obj_t * ui_lblPresetsBack;
 extern lv_obj_t * ui_lblPresetsStatus;
+extern lv_obj_t * ui_lblPresetsTxFile;
 void ui_event_ddPresetsFolder(lv_event_t * e);
 extern lv_obj_t * ui_ddPresetsFolder;
 void ui_event_ddPresetsFile(lv_event_t * e);
@@ -114,6 +115,9 @@ extern lv_obj_t * ui_ddPresetsFile;
 void ui_event_btnPresetTx(lv_event_t * e);
 extern lv_obj_t * ui_btnPresetTx;
 extern lv_obj_t * ui_lblPresetTx;
+void ui_event_btnPresetTesla(lv_event_t * e);
+extern lv_obj_t * ui_btnPresetTesla;
+extern lv_obj_t * ui_lblPresetTesla;
 // SCREEN: ui_scrSettings
 void ui_scrSettings_screen_init(void);
 extern lv_obj_t * ui_scrSettings;
@@ -137,53 +141,39 @@ extern lv_obj_t * ui_txtSettingsWifiKey;
 extern lv_obj_t * ui_lblSettingsWifiMode;
 extern lv_obj_t * ui_lblSettingsWifiModeAP;
 extern lv_obj_t * ui_lblSettingsWifiModeSTA;
-extern lv_obj_t * ui_btnSettingsOTA1;
+extern lv_obj_t * ui_btnSettingsSave;
 extern lv_obj_t * ui_lblSettingsSave;
+void ui_event_btnRotate(lv_event_t * e);
+extern lv_obj_t * ui_btnRotate;
+extern lv_obj_t * ui_lblRotate;
 // SCREEN: ui_scrWifiApps
 void ui_scrWifiApps_screen_init(void);
 extern lv_obj_t * ui_scrWifiApps;
-extern lv_obj_t * ui_imgWifiBtns;
 extern lv_obj_t * ui_lblWifiMain;
-void ui_event_btnWifiBackToMain(lv_event_t * e);
-extern lv_obj_t * ui_btnWifiBackToMain;
-extern lv_obj_t * ui_Label7;
-void ui_event_btnWifiScanner(lv_event_t * e);
-extern lv_obj_t * ui_btnWifiScanner;
-extern lv_obj_t * ui_lblWifiScanner;
-// SCREEN: ui_scrWifiScanner
-void ui_scrWifiScanner_screen_init(void);
-extern lv_obj_t * ui_scrWifiScanner;
-extern lv_obj_t * ui_lblWifiScan;
+extern lv_obj_t * ui_tabWifiApps;
+extern lv_obj_t * ui_WifiScan;
 void ui_event_btnWifiScannerScan(lv_event_t * e);
 extern lv_obj_t * ui_btnWifiScannerScan;
-void ui_event_btnWiFiScannerBack(lv_event_t * e);
-extern lv_obj_t * ui_btnWiFiScannerBack;
-extern lv_obj_t * ui_Label3;
 extern lv_obj_t * ui_lblWifiScannerScan;
 extern lv_obj_t * ui_txtWifiScanNetsFound;
 extern lv_obj_t * ui_lblWifiScanNetsFound;
 extern lv_obj_t * ui_ddlWifiSSID;
+extern lv_obj_t * ui_WifiApps;
+void ui_event_btnWifiBack(lv_event_t * e);
+extern lv_obj_t * ui_btnWifiBack;
+extern lv_obj_t * ui_lblWifiBack;
 // SCREEN: ui_scrRCSWMain
 void ui_scrRCSWMain_screen_init(void);
 extern lv_obj_t * ui_scrRCSWMain;
-extern lv_obj_t * ui_imgRCSWBtns;
 extern lv_obj_t * ui_lblRCSWMain;
-void ui_event_btnWifiBackToMain1(lv_event_t * e);
-extern lv_obj_t * ui_btnWifiBackToMain1;
-extern lv_obj_t * ui_Label1;
-void ui_event_btnWifiScanner1(lv_event_t * e);
-extern lv_obj_t * ui_btnWifiScanner1;
-extern lv_obj_t * ui_lblWifiScanner1;
-// SCREEN: ui_scrRCSWTenPole
-void ui_scrRCSWTenPole_screen_init(void);
-extern lv_obj_t * ui_scrRCSWTenPole;
-extern lv_obj_t * ui_lblRCSWApps;
-void ui_event_btnBackToRCSW(lv_event_t * e);
-extern lv_obj_t * ui_btnBackToRCSW;
-extern lv_obj_t * ui_lblBackToRCSW;
+extern lv_obj_t * ui_tabRCSWApps;
+extern lv_obj_t * ui_TenPole;
 void ui_event_btnTenPoleTxOn(lv_event_t * e);
 extern lv_obj_t * ui_btnTenPoleTxOn;
 extern lv_obj_t * ui_lblTenPoleTxOn;
+void ui_event_btnTenPoleTxOff(lv_event_t * e);
+extern lv_obj_t * ui_btnTenPoleTxOff;
+extern lv_obj_t * ui_lblTenPoleTxOff;
 void ui_event_TenPoleSW0(lv_event_t * e);
 extern lv_obj_t * ui_TenPoleSW0;
 void ui_event_TenPoleSW1(lv_event_t * e);
@@ -214,22 +204,50 @@ extern lv_obj_t * ui_lblBit6;
 extern lv_obj_t * ui_lblBit7;
 extern lv_obj_t * ui_lblBit8;
 extern lv_obj_t * ui_lblBit9;
-void ui_event_btnTenPoleTxOn1(lv_event_t * e);
-extern lv_obj_t * ui_btnTenPoleTxOn1;
-extern lv_obj_t * ui_lblTenPoleTxOn1;
 extern lv_obj_t * ui_ddlTenProto;
+void ui_event_txt10PoleFreq(lv_event_t * e);
+extern lv_obj_t * ui_txt10PoleFreq;
 extern lv_obj_t * ui_lblRCSWStatus;
-void ui_event_txtMainFreq1(lv_event_t * e);
-extern lv_obj_t * ui_txtMainFreq1;
+extern lv_obj_t * ui_NEW;
+void ui_event_btnRCSWBack(lv_event_t * e);
+extern lv_obj_t * ui_btnRCSWBack;
+extern lv_obj_t * ui_lblRCSWBack;
+// SCREEN: ui_scrCC1101Scan
+void ui_scrCC1101Scan_screen_init(void);
+extern lv_obj_t * ui_scrCC1101Scan;
+extern lv_obj_t * ui_lblRCSWApps1;
+extern lv_obj_t * ui_tabCC1101Scan;
+extern lv_obj_t * ui_Scanner;
+extern lv_obj_t * ui_txtScannerData;
+void ui_event_txtScanStartFq(lv_event_t * e);
+extern lv_obj_t * ui_txtScanStartFq;
+void ui_event_txtScanStopFq(lv_event_t * e);
+extern lv_obj_t * ui_txtScanStopFq;
+extern lv_obj_t * ui_lblScanStartFq;
+extern lv_obj_t * ui_lblScanStopFq;
+void ui_event_swScannerOn(lv_event_t * e);
+extern lv_obj_t * ui_swScannerOn;
+extern lv_obj_t * ui_Label2;
+void ui_event_btnScannerClear(lv_event_t * e);
+extern lv_obj_t * ui_btnScannerClear;
+extern lv_obj_t * ui_lblScannerClear;
+void ui_event_sldThreshold(lv_event_t * e);
+extern lv_obj_t * ui_sldThreshold;
+extern lv_obj_t * ui_lblSldThreshold;
+extern lv_obj_t * ui_lblThreshold;
+extern lv_obj_t * ui_Config;
+void ui_event_btnScanBack(lv_event_t * e);
+extern lv_obj_t * ui_btnScanBack;
+extern lv_obj_t * ui_lblScanBack;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_splashbkgnd2_png);    // assets\SplashBkgnd2.png
 LV_IMG_DECLARE(ui_img_mainbackground_png);    // assets\MainBackground.png
-LV_IMG_DECLARE(ui_img_teslabtnicon_png);    // assets\TeslaBtnIcon.png
 LV_IMG_DECLARE(ui_img_wifilogo_png);    // assets\WifiLogo.png
 LV_IMG_DECLARE(ui_img_analyzericon_png);    // assets\AnalyzerIcon.png
 LV_IMG_DECLARE(ui_img_subrecordplay_png);    // assets\SubRecordPlay.png
 LV_IMG_DECLARE(ui_img_flippericon_png);    // assets\FlipperIcon.png
+LV_IMG_DECLARE(ui_img_hackbkgnd2_png);    // assets\Hackbkgnd2.png
 LV_IMG_DECLARE(ui_img_blankpgbkgnd_png);    // assets\BlankPgBkgnd.png
 
 LV_FONT_DECLARE(ui_font_LCD20at8BPP);
