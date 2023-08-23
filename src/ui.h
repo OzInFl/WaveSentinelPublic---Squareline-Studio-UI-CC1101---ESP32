@@ -235,6 +235,10 @@ void ui_event_sldThreshold(lv_event_t * e);
 extern lv_obj_t * ui_sldThreshold;
 extern lv_obj_t * ui_lblSldThreshold;
 extern lv_obj_t * ui_lblThreshold;
+void ui_event_arcScanBW(lv_event_t * e);
+extern lv_obj_t * ui_arcScanBW;
+extern lv_obj_t * ui_lblScannerBWArc;
+extern lv_obj_t * ui_lblScannerBW;
 extern lv_obj_t * ui_Config;
 void ui_event_btnScanBack(lv_event_t * e);
 extern lv_obj_t * ui_btnScanBack;
@@ -249,6 +253,7 @@ LV_IMG_DECLARE(ui_img_subrecordplay_png);    // assets\SubRecordPlay.png
 LV_IMG_DECLARE(ui_img_flippericon_png);    // assets\FlipperIcon.png
 LV_IMG_DECLARE(ui_img_hackbkgnd2_png);    // assets\Hackbkgnd2.png
 LV_IMG_DECLARE(ui_img_blankpgbkgnd_png);    // assets\BlankPgBkgnd.png
+LV_IMG_DECLARE(ui_img_needle_png);    // assets\Needle.png
 
 LV_FONT_DECLARE(ui_font_LCD20at8BPP);
 LV_FONT_DECLARE(ui_font_LCD22at8BPP);

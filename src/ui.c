@@ -237,6 +237,10 @@ void ui_event_sldThreshold(lv_event_t * e);
 lv_obj_t * ui_sldThreshold;
 lv_obj_t * ui_lblSldThreshold;
 lv_obj_t * ui_lblThreshold;
+void ui_event_arcScanBW(lv_event_t * e);
+lv_obj_t * ui_arcScanBW;
+lv_obj_t * ui_lblScannerBWArc;
+lv_obj_t * ui_lblScannerBW;
 lv_obj_t * ui_Config;
 void ui_event_btnScanBack(lv_event_t * e);
 lv_obj_t * ui_btnScanBack;
@@ -659,8 +663,16 @@ void ui_event_sldThreshold(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_RELEASED) {
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
         _ui_slider_set_text_value(ui_lblThreshold, target, "", "");
+    }
+}
+void ui_event_arcScanBW(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        _ui_arc_set_text_value(ui_lblScannerBWArc, target, "", "");
     }
 }
 void ui_event_btnScanBack(lv_event_t * e)

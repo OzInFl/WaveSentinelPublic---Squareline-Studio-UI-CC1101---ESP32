@@ -810,8 +810,9 @@ void ProtAnalyzerloop() {
 
 void CC1101Scanloop() {
   mySwitch.enableReceive(CCGDO2A);
-
-  ELECHOUSE_cc1101.setRxBW(58);
+  lv_textarea_set_cursor_click_pos(ui_txtScannerData, false);
+  int rxBW = lv_arc_get_value(ui_arcScanBW);
+  ELECHOUSE_cc1101.setRxBW(rxBW); //orig = 58
   ELECHOUSE_cc1101.SetRx(freq);
 
   ELECHOUSE_cc1101.setMHZ(freq);

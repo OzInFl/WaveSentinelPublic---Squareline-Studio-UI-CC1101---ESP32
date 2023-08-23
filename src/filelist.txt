@@ -18,6 +18,7 @@ images/ui_img_subrecordplay_png.c
 images/ui_img_flippericon_png.c
 images/ui_img_hackbkgnd2_png.c
 images/ui_img_blankpgbkgnd_png.c
+images/ui_img_needle_png.c
 fonts/ui_font_LCD20at8BPP.c
 fonts/ui_font_LCD22at8BPP.c
 fonts/ui_font_LCD24at8BPP.c

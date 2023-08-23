@@ -35,7 +35,7 @@ void ui_scrProtAna_screen_init(void)
     lv_obj_clear_flag(ui_txtProtAnaResults, LV_OBJ_FLAG_CLICK_FOCUSABLE);      /// Flags
     lv_obj_set_style_text_color(ui_txtProtAnaResults, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_txtProtAnaResults, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_txtProtAnaResults, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_txtProtAnaResults, &ui_font_Verdana16, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_img_src(ui_txtProtAnaResults, &ui_img_blankpgbkgnd_png, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_btnProtAnaCncl = lv_btn_create(ui_scrProtAna);
