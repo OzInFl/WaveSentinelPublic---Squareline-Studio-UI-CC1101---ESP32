@@ -33,4 +33,4 @@ Various UI pages created for future use, developed With Squareline Studio. Sourc
 
 -OzInFl
 
-![alt text](https://github.com/OzInFl/CLIPPER1/blob/main/DocsAndImages/WaveSentinel.jpg?raw=true)
+![alt text](https://github.com/OzInFl/CLIPPER1/blob/main/DocsAndImages/WavePreview.png?raw=true)
