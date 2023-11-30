@@ -13,6 +13,8 @@ The design is low cost and effective for RF testing and can be expanded by the c
 
 Looking forward to what the community has in store for this project!
 
+WEB BASED FIRMWARE FLASH UTILITY: https://gtxpro.us/web-based-flash-utility/
+
 
 Features Thus Far: 
 
