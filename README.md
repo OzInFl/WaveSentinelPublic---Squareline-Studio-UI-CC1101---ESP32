@@ -7,6 +7,8 @@ Sub-Ghz - WiFi - Bluetooth 5 - Testing and Analysis Device
 
 WT32-SC01-PLUS interface for the CC1101 module that allows standalone testing without the need for external devices.
 
+UI Developed with Squareline Studio - All project files included so you can expand on the interface. 
+
 However it can be expanded via BLE and/or WiFi as it contains the ESP32-S3 MCU.
 
 The design is low cost and effective for RF testing and can be expanded by the customization of its firmware.
