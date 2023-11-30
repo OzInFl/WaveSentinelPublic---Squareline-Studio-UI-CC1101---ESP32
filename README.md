@@ -18,10 +18,10 @@ Features Thus Far:
 
 Dual CC1101 Modules (Still being tested)  ** ON HOLD FOR BETTER DESIGN METHOD **
 CC1101 Scanner W/Rssi (still a work in progress)
-Ability to Play FlipperZero .sub files from the SD card. 
+Ability to Play FlipperZero Raw .sub files from the SD card. 
 Sub-Ghz Protocol analyzer (thanks to the SmartRC Library) - Still needs some love but is working. 
 Wifi Scanner - For 2.4Ghz Wifi - will populate the found hotspots in the Dropdown for whatever... NEED TO ADD MORE TOOLS HERE!!
-Tesla Charge Port Tester - Dedicated button - Thanks to (https://github.com/fredilarsen/TeslaChargeDoorOpener) for the actual protocol rather than a capture. 
+Tesla Charge Port Tester - Dedicated button - Thanks to (https://github.com/fredilarsen/TeslaChargeDoorOpener) for the actual protocol rather than a capture.  US and EU Frequencies covered in one press..!
 Will Play Sound from SD card or memory (I2S) support
 
 
