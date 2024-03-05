@@ -36,5 +36,5 @@ Youtube links: https://youtu.be/rR51t8njWyE
 Various UI pages created for future use, developed With Squareline Studio. Source Files are in the LCD directory.
 
 -OzInFl
-
+![alt text](https://github.com/OzInFl/WaveSentinelPublic---Squareline-Studio-UI/blob/main/DocsAndImages/Wave%20Sentinel%20Wiring%20Diagram_UPDATED.png?raw=true)
 ![alt text](https://github.com/OzInFl/CLIPPER1/blob/main/DocsAndImages/WavePreview.png?raw=true)
