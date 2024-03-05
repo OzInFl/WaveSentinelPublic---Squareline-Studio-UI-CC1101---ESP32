@@ -20,7 +20,7 @@ WEB BASED FIRMWARE FLASH UTILITY: https://gtxpro.us/web-based-flash-utility/
 
 Features Thus Far: 
 
-Dual CC1101 Modules (Still being tested)  ** ON HOLD FOR BETTER DESIGN METHOD **
+
 CC1101 Scanner W/Rssi (still a work in progress)
 Ability to Play FlipperZero Raw .sub files from the SD card. 
 Sub-Ghz Protocol analyzer (thanks to the SmartRC Library) - Still needs some love but is working. 
