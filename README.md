@@ -38,5 +38,5 @@ Various UI pages created for future use, developed With Squareline Studio. Sourc
 -OzInFl
 
 Diagram for new Wiring Harness Being Shipped as of Mar 2024:
-![alt text](https://github.com/OzInFl/WaveSentinelPublic---Squareline-Studio-UI/blob/main/DocsAndImages/Wave%20Sentinel%20Wiring%20Diagram_UPDATED.png?raw=true)
+![alt text](DocsAndImages/WT32_ClipperDiagram_UPDATED.png?raw=true)
 ![alt text](https://github.com/OzInFl/CLIPPER1/blob/main/DocsAndImages/WavePreview.png?raw=true)
