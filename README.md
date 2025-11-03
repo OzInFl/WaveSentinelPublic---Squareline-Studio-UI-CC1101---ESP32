@@ -1,6 +1,6 @@
-NEW FIRMWARE REPO HERE (WEB BASED FLASH TOOL AVAILABLE HERE AS WELL)
+NEW REPO HERE (WEB BASED FLASH TOOL AVAILABLE HERE AS WELL)
 
-<a href='https://github.com/OzInFl/WaveSentinel-refactored2'/>
+<a href='https://github.com/OzInFl/WaveSentinel-refactored2'/a>
 
 <a href='https://ko-fi.com/ozinfl' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 
@@ -17,8 +17,6 @@ However it can be expanded via BLE and/or WiFi as it contains the ESP32-S3 MCU.
 The design is low cost and effective for RF testing and can be expanded by the customization of its firmware.
 
 Looking forward to what the community has in store for this project!
-
-WEB BASED FIRMWARE FLASH UTILITY: https://gtxpro.us/web-based-flash-utility/
 
 
 Features Thus Far: 
